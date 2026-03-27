@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(yarn add:*)",
+      "Bash(pod install:*)",
+      "Bash(mkdir -p /Users/a1021500055/Study/HelloRN/WeChatRN/src/features/moments/models)",
+      "Bash(mkdir -p /Users/a1021500055/Study/HelloRN/WeChatRN/src/features/moments/services)",
+      "Bash(mkdir -p /Users/a1021500055/Study/HelloRN/WeChatRN/src/features/moments/viewmodels)",
+      "Bash(mkdir -p /Users/a1021500055/Study/HelloRN/WeChatRN/src/features/moments/views/components)",
+      "Bash(mkdir -p /Users/a1021500055/Study/HelloRN/WeChatRN/src/features/moments/views/styles)",
+      "Bash(npx tsc:*)",
+      "Bash(yarn ios:*)",
+      "Bash(xcodebuild -workspace WeChatRN.xcworkspace -configuration Debug -scheme WeChatRN -destination \"id=00008110-001255463A84801E\")",
+      "Bash(__NEW_LINE_b3cae3c4474721a1__ mkdir:*)",
+      "Bash(__NEW_LINE_b3cae3c4474721a1__ mv:*)",
+      "Bash(__NEW_LINE_b3cae3c4474721a1__ echo:*)",
+      "Bash(grep:*)"
+    ]
+  }
+}
