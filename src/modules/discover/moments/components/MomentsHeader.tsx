@@ -11,10 +11,13 @@ import {
 } from 'react-native';
 
 const {width: SCREEN_WIDTH} = Dimensions.get('window');
-export const COVER_HEIGHT = 220;
-export const AVATAR_SIZE = 64;
+export const COVER_HEIGHT = 248;
+export const AVATAR_SIZE = 72;
+export const AVATAR_OVERHANG = AVATAR_SIZE / 2;
+const HEADER_HEIGHT = COVER_HEIGHT + AVATAR_OVERHANG;
 
-const COVER_URI = 'https://picsum.photos/seed/moments_cover/800/440';
+export const COVER_URI =
+  'https://images.unsplash.com/photo-1514565131-fce0801e5785?auto=format&fit=crop&w=1400&q=80';
 const AVATAR_URI = 'https://i.pravatar.cc/150?img=10';
 const MY_NAME = '我';
 
@@ -23,31 +26,37 @@ interface Props {
 }
 
 export default function MomentsHeader({scrollY}: Props) {
-  // 下拉放大：scrollY < 0 时封面放大
-  const coverScale = scrollY.interpolate({
+  const pullDownDistance = scrollY.interpolate({
     inputRange: [-COVER_HEIGHT, 0],
-    outputRange: [2, 1],
+    outputRange: [COVER_HEIGHT, 0],
     extrapolate: 'clamp',
   });
 
-  const coverTranslateY = scrollY.interpolate({
-    inputRange: [-COVER_HEIGHT, 0],
-    outputRange: [-COVER_HEIGHT / 2, 0],
+  const headerTranslateY = scrollY.interpolate({
+    inputRange: [0, HEADER_HEIGHT],
+    outputRange: [0, -HEADER_HEIGHT],
     extrapolate: 'clamp',
   });
+
+  const headerHeight = Animated.add(pullDownDistance, HEADER_HEIGHT);
+  const coverHeight = Animated.add(pullDownDistance, COVER_HEIGHT);
 
   return (
-    <View style={styles.container}>
+    <Animated.View
+      style={[
+        styles.container,
+        {
+          height: headerHeight,
+          transform: [{translateY: headerTranslateY}],
+        },
+      ]}>
       {/* 封面图 */}
       <Animated.Image
         source={{uri: COVER_URI}}
         style={[
           styles.cover,
           {
-            transform: [
-              {scale: coverScale},
-              {translateY: coverTranslateY},
-            ],
+            height: coverHeight,
           },
         ]}
         resizeMode="cover"
@@ -65,14 +74,19 @@ export default function MomentsHeader({scrollY}: Props) {
         onPress={() => Alert.alert('提示', '功能开发中')}>
         <Text style={styles.cameraIcon}>📷</Text>
       </TouchableOpacity>
-    </View>
+    </Animated.View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    zIndex: 1,
     width: SCREEN_WIDTH,
-    height: COVER_HEIGHT + AVATAR_SIZE / 2,
+    height: HEADER_HEIGHT,
     backgroundColor: '#FFFFFF',
     overflow: 'hidden',
   },
@@ -86,31 +100,38 @@ const styles = StyleSheet.create({
   profileRow: {
     position: 'absolute',
     bottom: 0,
-    right: 12,
+    right: 16,
     flexDirection: 'row',
     alignItems: 'flex-end',
-    gap: 10,
+    gap: 12,
   },
   name: {
     color: '#fff',
-    fontSize: 17,
-    fontWeight: '600',
-    marginBottom: 8,
-    textShadowColor: 'rgba(0,0,0,0.55)',
+    fontSize: 18,
+    fontWeight: '700',
+    marginBottom: 10,
+    textShadowColor: 'rgba(0,0,0,0.35)',
     textShadowOffset: {width: 0, height: 1},
-    textShadowRadius: 6,
+    textShadowRadius: 4,
   },
   avatar: {
     width: AVATAR_SIZE,
     height: AVATAR_SIZE,
-    borderRadius: 6,
-    backgroundColor: 'transparent',
+    borderRadius: 10,
+    backgroundColor: '#D9D9D9',
+    borderWidth: 2,
+    borderColor: '#FFFFFF',
   },
   cameraBtn: {
     position: 'absolute',
-    top: 50,
+    top: 56,
     right: 16,
-    padding: 6,
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(0,0,0,0.18)',
   },
-  cameraIcon: {fontSize: 22},
+  cameraIcon: {fontSize: 15},
 });

@@ -21,13 +21,13 @@ export default function LikeList({likes}: Props) {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    backgroundColor: '#F7F7F7',
-    paddingHorizontal: 8,
-    paddingVertical: 6,
-    borderRadius: 2,
+    backgroundColor: '#F3F3F5',
+    paddingHorizontal: 10,
+    paddingVertical: 7,
+    borderRadius: 3,
     flexWrap: 'wrap',
     alignItems: 'flex-start',
   },
-  heart: {color: '#E05C5C', fontSize: 13},
-  names: {color: '#5B7EAE', fontSize: 13, flex: 1, flexWrap: 'wrap'},
+  heart: {color: '#E05C5C', fontSize: 12, marginTop: 1},
+  names: {color: '#5B7EAE', fontSize: 13, lineHeight: 19, flex: 1, flexWrap: 'wrap'},
 });

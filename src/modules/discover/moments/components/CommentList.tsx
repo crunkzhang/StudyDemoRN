@@ -31,15 +31,15 @@ export default function CommentList({comments}: Props) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#F7F7F7',
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 2,
+    backgroundColor: '#F3F3F5',
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 3,
   },
   item: {paddingVertical: 2},
-  text: {fontSize: 13, lineHeight: 20},
+  text: {fontSize: 13, lineHeight: 19},
   name: {color: '#5B7EAE', fontWeight: '500'},
   replyLabel: {color: '#999'},
   colon: {color: '#333'},
-  content: {color: '#333'},
+  content: {color: '#222'},
 });

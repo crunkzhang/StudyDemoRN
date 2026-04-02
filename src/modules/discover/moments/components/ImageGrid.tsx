@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   View,
-  Text,
   Image,
   TouchableOpacity,
   StyleSheet,
@@ -71,6 +70,6 @@ export default function ImageGrid({images, onPressImage}: Props) {
 const styles = StyleSheet.create({
   container: {gap: GAP},
   row: {flexDirection: 'row'},
-  imgWrapper: {overflow: 'hidden', borderRadius: 2},
+  imgWrapper: {overflow: 'hidden', borderRadius: 3},
   img: {width: '100%', height: '100%', resizeMode: 'cover'},
 });

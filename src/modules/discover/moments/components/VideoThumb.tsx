@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Image, TouchableOpacity, StyleSheet, Text} from 'react-native';
+import {View, Image, StyleSheet, Text} from 'react-native';
 
 interface Props {
   thumb: string;
@@ -18,13 +18,13 @@ export default function VideoThumb({thumb}: Props) {
 
 const styles = StyleSheet.create({
   container: {
-    width: 200,
-    height: 150,
-    borderRadius: 4,
+    width: 224,
+    height: 168,
+    borderRadius: 6,
     overflow: 'hidden',
     backgroundColor: '#000',
   },
-  thumb: {width: '100%', height: '100%', resizeMode: 'cover', opacity: 0.85},
+  thumb: {width: '100%', height: '100%', resizeMode: 'cover', opacity: 0.92},
   playBtn: {
     position: 'absolute',
     top: 0,
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
   },
   playIcon: {
     color: '#fff',
-    fontSize: 36,
+    fontSize: 34,
     textShadowColor: 'rgba(0,0,0,0.5)',
     textShadowOffset: {width: 0, height: 1},
     textShadowRadius: 4,
