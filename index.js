@@ -14,6 +14,7 @@ import SearchPage from './src/modules/discover/search/pages/SearchPage';
 import ShakePage from './src/modules/discover/shake/pages/ShakePage';
 import ShoppingPage from './src/modules/discover/shopping/pages/ShoppingPage';
 import VideoChannelPage from './src/modules/discover/videoChannel/pages/VideoChannelPage';
+import SettingsPage from './src/modules/profile/pages/SettingsPage';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { name as appName } from './app.json';
 
@@ -37,3 +38,4 @@ AppRegistry.registerComponent('Nearby', () => withSafeArea(NearbyPage));
 AppRegistry.registerComponent('Shopping', () => withSafeArea(ShoppingPage));
 AppRegistry.registerComponent('Search', () => withSafeArea(SearchPage));
 AppRegistry.registerComponent('GameCenter', () => withSafeArea(GameCenterPage));
+AppRegistry.registerComponent('Settings', () => withSafeArea(SettingsPage));

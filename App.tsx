@@ -9,7 +9,7 @@ import {
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import ChatDetailPage from './src/modules/chat/pages/ChatDetailPage';
 import UserProfilePage from './src/modules/profile/pages/UserProfilePage';
-import SettingsPage from './src/modules/settings/pages/SettingsPage';
+import SettingsPage from './src/modules/profile/pages/SettingsPage';
 import MomentsPage from './src/modules/discover/moments/pages/MomentsPage';
 import GameCenterPage from './src/modules/discover/game/pages/GameCenterPage';
 import NearbyPage from './src/modules/discover/nearby/pages/NearbyPage';
