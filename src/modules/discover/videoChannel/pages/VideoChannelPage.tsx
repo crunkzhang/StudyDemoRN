@@ -169,10 +169,10 @@ const styles = StyleSheet.create({
   container: {flex: 1, backgroundColor: '#0F1014'},
   contentContainer: {paddingBottom: 28},
   hero: {
-    minHeight: 432,
+    minHeight: 336,
     justifyContent: 'flex-end',
     paddingHorizontal: 18,
-    paddingBottom: 26,
+    paddingBottom: 18,
     overflow: 'hidden',
   },
   heroImage: {
@@ -213,22 +213,22 @@ const styles = StyleSheet.create({
     letterSpacing: 1.2,
   },
   heroHeadline: {
-    marginTop: 12,
-    maxWidth: 300,
+    marginTop: 10,
+    maxWidth: 272,
     color: '#FFFFFF',
-    fontSize: 34,
-    lineHeight: 40,
+    fontSize: 27,
+    lineHeight: 33,
     fontWeight: '800',
   },
   heroSubline: {
-    marginTop: 12,
-    maxWidth: 292,
+    marginTop: 10,
+    maxWidth: 264,
     color: 'rgba(255,255,255,0.78)',
-    fontSize: 14,
-    lineHeight: 21,
+    fontSize: 13,
+    lineHeight: 19,
   },
   tabRow: {
-    paddingTop: 22,
+    paddingTop: 16,
     gap: 10,
   },
   tabChip: {
@@ -249,7 +249,7 @@ const styles = StyleSheet.create({
     color: '#0F1014',
   },
   creatorStrip: {
-    paddingTop: 18,
+    paddingTop: 14,
     paddingBottom: 10,
   },
   creatorStripHeader: {
@@ -290,7 +290,7 @@ const styles = StyleSheet.create({
     fontSize: 11,
   },
   feed: {
-    paddingTop: 8,
+    paddingTop: 4,
     paddingHorizontal: 14,
   },
   videoBlock: {

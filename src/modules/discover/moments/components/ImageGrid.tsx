@@ -9,8 +9,12 @@ import {
 
 const {width: SCREEN_WIDTH} = Dimensions.get('window');
 const GAP = 4;
-// 宫格容器宽度（左边有头像+padding，右侧内容区）
-const CONTENT_WIDTH = SCREEN_WIDTH - 16 - 40 - 12; // paddingLeft16 + avatar40 + gap12
+const SIDE_PADDING = 16;
+const AVATAR_WIDTH = 40;
+const CONTENT_GAP = 12;
+const GRID_SIDE_INSET = SIDE_PADDING + AVATAR_WIDTH + CONTENT_GAP;
+// 宫格左右都留出和正文左边相同的空白，让网格更像微信的版式
+const CONTENT_WIDTH = SCREEN_WIDTH - GRID_SIDE_INSET * 2;
 
 function getImageSize(count: number): {width: number; height: number} {
   if (count === 1) {
