@@ -47,7 +47,8 @@ const creators = [
   {id: '5', name: 'Mori', tag: '料理'},
 ];
 
-const heroCover = 'https://picsum.photos/seed/videochannel_hero_cover/1400/1800';
+const heroCover =
+  'https://images.unsplash.com/photo-1519608487953-e999c86e7455?auto=format&fit=crop&w=1400&q=80';
 
 const VideoChannelPage: React.FC = () => {
   const insets = useSafeAreaInsets();
@@ -75,35 +76,29 @@ const VideoChannelPage: React.FC = () => {
           <View style={styles.heroGlowBottom} />
 
           <View style={styles.heroInner}>
-            <Text style={styles.heroBrand}>视频号</Text>
             <Text style={styles.heroHeadline}>朋友赞过的内容，今晚更值得停留一会</Text>
             <Text style={styles.heroSubline}>
               推荐内容、朋友互动和创作者入口被收进一个完整首屏，透明导航栏也能真正服务氛围。
             </Text>
-
-            <ScrollView
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              contentContainerStyle={styles.tabRow}>
-              {tabs.map((tab, index) => (
-                <View
-                  key={tab}
-                  style={[styles.tabChip, index === 2 && styles.activeTabChip]}>
-                  <Text
-                    style={[styles.tabText, index === 2 && styles.activeTabText]}>
-                    {tab}
-                  </Text>
-                </View>
-              ))}
-            </ScrollView>
           </View>
         </ImageBackground>
 
         <View style={styles.creatorStrip}>
-          <View style={styles.creatorStripHeader}>
-            <Text style={styles.creatorStripTitle}>今晚值得看的人</Text>
-            <Text style={styles.creatorStripHint}>按你最近停留的内容推荐</Text>
-          </View>
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.tabRow}>
+            {tabs.map((tab, index) => (
+              <View
+                key={tab}
+                style={[styles.tabChip, index === 2 && styles.activeTabChip]}>
+                <Text
+                  style={[styles.tabText, index === 2 && styles.activeTabText]}>
+                  {tab}
+                </Text>
+              </View>
+            ))}
+          </ScrollView>
           <ScrollView
             horizontal
             showsHorizontalScrollIndicator={false}
@@ -169,21 +164,16 @@ const styles = StyleSheet.create({
   container: {flex: 1, backgroundColor: '#0F1014'},
   contentContainer: {paddingBottom: 28},
   hero: {
-    minHeight: 336,
+    minHeight: 252,
     justifyContent: 'flex-end',
     paddingHorizontal: 18,
-    paddingBottom: 18,
+    paddingBottom: 12,
     overflow: 'hidden',
   },
-  heroImage: {
-    borderBottomLeftRadius: 32,
-    borderBottomRightRadius: 32,
-  },
+  heroImage: {},
   heroOverlay: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: 'rgba(10,12,18,0.46)',
-    borderBottomLeftRadius: 32,
-    borderBottomRightRadius: 32,
   },
   heroGlowLeft: {
     position: 'absolute',
@@ -206,29 +196,24 @@ const styles = StyleSheet.create({
   heroInner: {
     position: 'relative',
   },
-  heroBrand: {
-    color: 'rgba(255,255,255,0.82)',
-    fontSize: 14,
-    fontWeight: '700',
-    letterSpacing: 1.2,
-  },
   heroHeadline: {
-    marginTop: 10,
-    maxWidth: 272,
+    maxWidth: 288,
     color: '#FFFFFF',
-    fontSize: 27,
-    lineHeight: 33,
+    fontSize: 22,
+    lineHeight: 27,
     fontWeight: '800',
   },
   heroSubline: {
-    marginTop: 10,
-    maxWidth: 264,
+    marginTop: 7,
+    maxWidth: 236,
     color: 'rgba(255,255,255,0.78)',
-    fontSize: 13,
-    lineHeight: 19,
+    fontSize: 11,
+    lineHeight: 17,
   },
   tabRow: {
-    paddingTop: 16,
+    paddingTop: 8,
+    paddingLeft: 18,
+    paddingRight: 8,
     gap: 10,
   },
   tabChip: {
@@ -249,24 +234,11 @@ const styles = StyleSheet.create({
     color: '#0F1014',
   },
   creatorStrip: {
-    paddingTop: 14,
-    paddingBottom: 10,
-  },
-  creatorStripHeader: {
-    paddingHorizontal: 18,
-  },
-  creatorStripTitle: {
-    color: '#F7F8FA',
-    fontSize: 20,
-    fontWeight: '800',
-  },
-  creatorStripHint: {
-    marginTop: 6,
-    color: '#8D93A0',
-    fontSize: 13,
+    paddingTop: 6,
+    paddingBottom: 8,
   },
   creatorRow: {
-    paddingTop: 14,
+    paddingTop: 10,
     paddingHorizontal: 18,
     gap: 14,
   },
