@@ -1,5 +1,12 @@
 import React from 'react';
-import {Image, ScrollView, StyleSheet, Text, View} from 'react-native';
+import {
+  Image,
+  ImageBackground,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import PageScaffold from '../../../../shared/ui/PageScaffold';
 
@@ -11,18 +18,36 @@ const featuredVideos = [
     title: '下班后的城市骑行记录',
     author: '阿凯的胶片日记',
     stats: '2.4w 播放 · 1.1k 点赞',
-    gradient: '#2B2E36',
+    desc: '把夜骑、街道反光和城市风声剪成 38 秒，画面会更像视频号首页该有的真实内容感。',
+    cover: 'https://picsum.photos/seed/videochannel_cover_1/1200/1600',
   },
   {
     id: '2',
     title: '今天这顿家常饭太治愈了',
     author: '小禾的厨房',
     stats: '8.6k 播放 · 428 评论',
-    gradient: '#3A302C',
+    desc: '热气、锅声和很短的文案就足够构成一条让人停下来的推荐内容。',
+    cover: 'https://picsum.photos/seed/videochannel_cover_2/1200/1500',
+  },
+  {
+    id: '3',
+    title: '傍晚江边的风比想象中更轻',
+    author: 'River Notes',
+    stats: '1.7w 播放 · 903 点赞',
+    desc: '把慢一点的生活瞬间做成更克制的竖屏内容，节奏会更接近真实视频号氛围。',
+    cover: 'https://picsum.photos/seed/videochannel_cover_3/1200/1550',
   },
 ];
 
-const creators = ['M', 'L', 'K', 'R', 'Y'];
+const creators = [
+  {id: '1', name: '阿凯', tag: '夜骑'},
+  {id: '2', name: '小禾', tag: '日常'},
+  {id: '3', name: 'Rita', tag: '穿搭'},
+  {id: '4', name: '野岛', tag: '旅行'},
+  {id: '5', name: 'Mori', tag: '料理'},
+];
+
+const heroCover = 'https://picsum.photos/seed/videochannel_hero_cover/1400/1800';
 
 const VideoChannelPage: React.FC = () => {
   const insets = useSafeAreaInsets();
@@ -30,28 +55,32 @@ const VideoChannelPage: React.FC = () => {
   return (
     <PageScaffold
       navMode="native"
-      backgroundColor="#111216"
+      backgroundColor="#0F1014"
       navbarAppearance={{
         shadowHidden: true,
         tintColor: '#FFFFFF',
         transparent: true,
       }}
       showHeader={false}>
-      <View style={styles.container}>
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <View style={[styles.heroHeader, {paddingTop: insets.top + 8}]}>
-            <View style={styles.heroBackdrop}>
-              <View style={styles.heroGlowPrimary} />
-              <View style={styles.heroGlowSecondary} />
-              <View style={styles.heroGlowSoft} />
-            </View>
-            <View style={styles.heroInner}>
-              <Text style={styles.heroTitle}>视频号</Text>
-              <Text style={styles.heroSubtitle}>看看朋友赞过和正在发生的新鲜内容</Text>
-            </View>
-          </View>
+      <ScrollView
+        style={styles.container}
+        contentContainerStyle={styles.contentContainer}
+        showsVerticalScrollIndicator={false}>
+        <ImageBackground
+          source={{uri: heroCover}}
+          imageStyle={styles.heroImage}
+          style={[styles.hero, {paddingTop: insets.top + 6}]}>
+          <View style={styles.heroOverlay} />
+          <View style={styles.heroGlowLeft} />
+          <View style={styles.heroGlowBottom} />
 
-          <View style={styles.channelHeader}>
+          <View style={styles.heroInner}>
+            <Text style={styles.heroBrand}>视频号</Text>
+            <Text style={styles.heroHeadline}>朋友赞过的内容，今晚更值得停留一会</Text>
+            <Text style={styles.heroSubline}>
+              推荐内容、朋友互动和创作者入口被收进一个完整首屏，透明导航栏也能真正服务氛围。
+            </Text>
+
             <ScrollView
               horizontal
               showsHorizontalScrollIndicator={false}
@@ -67,183 +96,308 @@ const VideoChannelPage: React.FC = () => {
                 </View>
               ))}
             </ScrollView>
-
-            <ScrollView
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              contentContainerStyle={styles.creatorRow}>
-              {creators.map(name => (
-                <View key={name} style={styles.creatorItem}>
-                  <View style={styles.creatorAvatar}>
-                    <Text style={styles.creatorAvatarText}>{name}</Text>
-                  </View>
-                  <Text style={styles.creatorName}>创作者{name}</Text>
-                </View>
-              ))}
-            </ScrollView>
           </View>
+        </ImageBackground>
 
-          <View style={styles.feed}>
-            {featuredVideos.map(video => (
-              <View key={video.id} style={styles.videoCard}>
-                <View style={[styles.videoCover, {backgroundColor: video.gradient}]}>
-                  <View style={styles.coverTopRow}>
-                    <Text style={styles.liveBadge}>推荐</Text>
-                    <Text style={styles.coverMeta}>00:38</Text>
-                  </View>
-                  <View style={styles.playButton}>
-                    <Text style={styles.playText}>▶</Text>
-                  </View>
-                  <View style={styles.coverBottom}>
-                    <Text style={styles.videoTitle}>{video.title}</Text>
-                    <Text style={styles.videoStats}>{video.stats}</Text>
-                  </View>
-                </View>
-
-                <View style={styles.videoMetaRow}>
-                  <View style={styles.authorRow}>
-                    <Image
-                      source={{uri: `https://picsum.photos/seed/video_${video.id}/80/80`}}
-                      style={styles.authorAvatar}
-                    />
-                    <View>
-                      <Text style={styles.authorName}>{video.author}</Text>
-                      <Text style={styles.authorHint}>朋友赞过 · 刚刚更新</Text>
-                    </View>
-                  </View>
-                  <Text style={styles.moreIcon}>⋯</Text>
-                </View>
+        <View style={styles.creatorStrip}>
+          <View style={styles.creatorStripHeader}>
+            <Text style={styles.creatorStripTitle}>今晚值得看的人</Text>
+            <Text style={styles.creatorStripHint}>按你最近停留的内容推荐</Text>
+          </View>
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.creatorRow}>
+            {creators.map(creator => (
+              <View key={creator.id} style={styles.creatorItem}>
+                <Image
+                  source={{
+                    uri: `https://picsum.photos/seed/video_creator_${creator.id}/160/160`,
+                  }}
+                  style={styles.creatorAvatar}
+                />
+                <Text style={styles.creatorName}>{creator.name}</Text>
+                <Text style={styles.creatorTag}>{creator.tag}</Text>
               </View>
             ))}
-          </View>
-        </ScrollView>
-      </View>
+          </ScrollView>
+        </View>
+
+        <View style={styles.feed}>
+          {featuredVideos.map((video, index) => (
+            <View key={video.id} style={styles.videoBlock}>
+              <ImageBackground
+                source={{uri: video.cover}}
+                imageStyle={styles.videoCoverImage}
+                style={[styles.videoCover, index === 0 ? styles.primaryCover : styles.secondaryCover]}>
+                <View style={styles.videoShade} />
+                <View style={styles.videoTopRow}>
+                  <Text style={styles.badge}>{index === 0 ? '推荐' : '朋友赞过'}</Text>
+                  <Text style={styles.coverMeta}>00:{index === 0 ? '38' : index === 1 ? '24' : '41'}</Text>
+                </View>
+                <View style={styles.playButton}>
+                  <Text style={styles.playText}>▶</Text>
+                </View>
+                <View style={styles.videoCopy}>
+                  <Text style={styles.videoTitle}>{video.title}</Text>
+                  <Text style={styles.videoStats}>{video.stats}</Text>
+                </View>
+              </ImageBackground>
+
+              <View style={styles.videoMetaRow}>
+                <View style={styles.authorRow}>
+                  <Image
+                    source={{uri: `https://picsum.photos/seed/video_author_${video.id}/100/100`}}
+                    style={styles.authorAvatar}
+                  />
+                  <View style={styles.authorCopy}>
+                    <Text style={styles.authorName}>{video.author}</Text>
+                    <Text style={styles.authorHint}>{video.desc}</Text>
+                  </View>
+                </View>
+                <Text style={styles.moreIcon}>⋯</Text>
+              </View>
+            </View>
+          ))}
+        </View>
+      </ScrollView>
     </PageScaffold>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {flex: 1, backgroundColor: '#111216'},
-  heroHeader: {
-    paddingHorizontal: 16,
-    paddingTop: 8,
-    paddingBottom: 20,
+  container: {flex: 1, backgroundColor: '#0F1014'},
+  contentContainer: {paddingBottom: 28},
+  hero: {
+    minHeight: 432,
+    justifyContent: 'flex-end',
+    paddingHorizontal: 18,
+    paddingBottom: 26,
     overflow: 'hidden',
   },
-  heroBackdrop: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: '#111216',
+  heroImage: {
+    borderBottomLeftRadius: 32,
+    borderBottomRightRadius: 32,
   },
-  heroGlowPrimary: {
-    position: 'absolute',
-    top: -54,
-    left: -48,
-    width: 240,
-    height: 240,
-    borderRadius: 120,
-    backgroundColor: 'rgba(78, 96, 134, 0.08)',
+  heroOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(10,12,18,0.46)',
+    borderBottomLeftRadius: 32,
+    borderBottomRightRadius: 32,
   },
-  heroGlowSecondary: {
+  heroGlowLeft: {
     position: 'absolute',
-    top: 28,
-    right: -64,
+    top: -40,
+    left: -18,
+    width: 180,
+    height: 180,
+    borderRadius: 90,
+    backgroundColor: 'rgba(255,255,255,0.07)',
+  },
+  heroGlowBottom: {
+    position: 'absolute',
+    right: -20,
+    bottom: -40,
     width: 220,
     height: 220,
     borderRadius: 110,
-    backgroundColor: 'rgba(214, 133, 84, 0.06)',
-  },
-  heroGlowSoft: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    bottom: -52,
-    height: 112,
-    backgroundColor: 'rgba(255,255,255,0.015)',
+    backgroundColor: 'rgba(255,170,96,0.08)',
   },
   heroInner: {
-    paddingTop: 8,
-    paddingBottom: 8,
+    position: 'relative',
   },
-  heroTitle: {fontSize: 32, fontWeight: '800', color: '#fff'},
-  heroSubtitle: {
-    marginTop: 8,
+  heroBrand: {
+    color: 'rgba(255,255,255,0.82)',
     fontSize: 14,
-    lineHeight: 20,
-    color: '#9BA2AF',
+    fontWeight: '700',
+    letterSpacing: 1.2,
   },
-  channelHeader: {
+  heroHeadline: {
+    marginTop: 12,
+    maxWidth: 300,
+    color: '#FFFFFF',
+    fontSize: 34,
+    lineHeight: 40,
+    fontWeight: '800',
+  },
+  heroSubline: {
+    marginTop: 12,
+    maxWidth: 292,
+    color: 'rgba(255,255,255,0.78)',
+    fontSize: 14,
+    lineHeight: 21,
+  },
+  tabRow: {
+    paddingTop: 22,
+    gap: 10,
+  },
+  tabChip: {
+    borderRadius: 999,
+    backgroundColor: 'rgba(255,255,255,0.1)',
+    paddingHorizontal: 16,
+    paddingVertical: 9,
+  },
+  activeTabChip: {
+    backgroundColor: '#FFFFFF',
+  },
+  tabText: {
+    color: 'rgba(255,255,255,0.75)',
+    fontSize: 14,
+    fontWeight: '700',
+  },
+  activeTabText: {
+    color: '#0F1014',
+  },
+  creatorStrip: {
+    paddingTop: 18,
     paddingBottom: 10,
   },
-  tabRow: {paddingHorizontal: 16, paddingBottom: 12, gap: 10},
-  tabChip: {
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 999,
-    backgroundColor: '#1C1E25',
+  creatorStripHeader: {
+    paddingHorizontal: 18,
   },
-  activeTabChip: {backgroundColor: '#fff'},
-  tabText: {fontSize: 14, color: '#A9ADB8', fontWeight: '600'},
-  activeTabText: {color: '#121318'},
-  creatorRow: {paddingHorizontal: 16, paddingBottom: 12, gap: 12},
-  creatorItem: {alignItems: 'center'},
+  creatorStripTitle: {
+    color: '#F7F8FA',
+    fontSize: 20,
+    fontWeight: '800',
+  },
+  creatorStripHint: {
+    marginTop: 6,
+    color: '#8D93A0',
+    fontSize: 13,
+  },
+  creatorRow: {
+    paddingTop: 14,
+    paddingHorizontal: 18,
+    gap: 14,
+  },
+  creatorItem: {
+    width: 72,
+  },
   creatorAvatar: {
-    width: 54,
-    height: 54,
-    borderRadius: 27,
-    backgroundColor: '#2A2D35',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  creatorAvatarText: {color: '#fff', fontWeight: '700'},
-  creatorName: {marginTop: 7, fontSize: 12, color: '#B5BAC4'},
-  feed: {paddingHorizontal: 12, paddingBottom: 28, paddingTop: 6},
-  videoCard: {
-    marginBottom: 18,
+    width: 72,
+    height: 72,
     borderRadius: 26,
-    backgroundColor: '#1A1C22',
-    overflow: 'hidden',
   },
-  videoCover: {height: 370, padding: 16, justifyContent: 'space-between'},
-  coverTopRow: {flexDirection: 'row', justifyContent: 'space-between'},
-  liveBadge: {
-    paddingHorizontal: 10,
-    paddingVertical: 5,
+  creatorName: {
+    marginTop: 9,
+    color: '#F2F4F7',
+    fontSize: 13,
+    fontWeight: '700',
+  },
+  creatorTag: {
+    marginTop: 4,
+    color: '#8B919D',
+    fontSize: 11,
+  },
+  feed: {
+    paddingTop: 8,
+    paddingHorizontal: 14,
+  },
+  videoBlock: {
+    marginBottom: 24,
+  },
+  videoCover: {
+    justifyContent: 'space-between',
+    overflow: 'hidden',
+    borderRadius: 30,
+    padding: 16,
+  },
+  primaryCover: {
+    minHeight: 448,
+  },
+  secondaryCover: {
+    minHeight: 368,
+  },
+  videoCoverImage: {
+    borderRadius: 30,
+  },
+  videoShade: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(15,16,20,0.28)',
+  },
+  videoTopRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  badge: {
+    alignSelf: 'flex-start',
     borderRadius: 999,
-    backgroundColor: 'rgba(255,255,255,0.15)',
-    color: '#fff',
+    backgroundColor: 'rgba(10,12,18,0.3)',
+    color: '#FFFFFF',
+    overflow: 'hidden',
+    paddingHorizontal: 11,
+    paddingVertical: 6,
     fontSize: 12,
     fontWeight: '700',
   },
-  coverMeta: {color: '#fff', fontSize: 12},
+  coverMeta: {
+    color: '#FFFFFF',
+    fontSize: 12,
+    fontWeight: '600',
+  },
   playButton: {
     alignSelf: 'center',
-    width: 64,
-    height: 64,
-    borderRadius: 32,
-    backgroundColor: 'rgba(255,255,255,0.16)',
+    width: 76,
+    height: 76,
+    borderRadius: 38,
+    backgroundColor: 'rgba(255,255,255,0.18)',
     alignItems: 'center',
     justifyContent: 'center',
   },
-  playText: {color: '#fff', fontSize: 22},
-  coverBottom: {},
-  videoTitle: {fontSize: 24, fontWeight: '800', color: '#fff', lineHeight: 32},
-  videoStats: {marginTop: 8, fontSize: 13, color: '#D6DAE3'},
+  playText: {
+    color: '#FFFFFF',
+    fontSize: 24,
+    marginLeft: 3,
+  },
+  videoCopy: {
+    maxWidth: 270,
+  },
+  videoTitle: {
+    color: '#FFFFFF',
+    fontSize: 28,
+    lineHeight: 34,
+    fontWeight: '800',
+  },
+  videoStats: {
+    marginTop: 9,
+    color: 'rgba(255,255,255,0.82)',
+    fontSize: 13,
+  },
   videoMetaRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: 14,
-    paddingVertical: 14,
+    alignItems: 'flex-start',
+    paddingHorizontal: 6,
+    paddingTop: 14,
   },
-  authorRow: {flexDirection: 'row', alignItems: 'center'},
-  authorAvatar: {width: 40, height: 40, borderRadius: 20, marginRight: 10},
-  authorName: {fontSize: 15, fontWeight: '700', color: '#fff'},
-  authorHint: {marginTop: 4, fontSize: 12, color: '#969CAA'},
-  moreIcon: {fontSize: 22, color: '#A5AAB4'},
+  authorRow: {
+    flexDirection: 'row',
+    flex: 1,
+    paddingRight: 12,
+  },
+  authorAvatar: {
+    width: 44,
+    height: 44,
+    borderRadius: 16,
+    marginRight: 10,
+  },
+  authorCopy: {flex: 1},
+  authorName: {
+    color: '#F2F4F7',
+    fontSize: 15,
+    fontWeight: '700',
+  },
+  authorHint: {
+    marginTop: 5,
+    color: '#8E95A3',
+    fontSize: 12,
+    lineHeight: 18,
+  },
+  moreIcon: {
+    color: '#9DA3AF',
+    fontSize: 22,
+    lineHeight: 24,
+  },
 });
 
 export default VideoChannelPage;
