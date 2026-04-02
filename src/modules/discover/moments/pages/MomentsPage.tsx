@@ -13,6 +13,8 @@ import {useMomentsViewModel} from '../viewmodels/useMomentsViewModel';
 import PostItem from '../components/PostItem';
 import MomentsHeader, {COVER_HEIGHT, AVATAR_SIZE} from '../components/MomentsHeader';
 import {Post} from '../models/Post';
+import PageScaffold from '../../../../shared/ui/PageScaffold';
+import {RNBridge} from '../../../../shared/bridges/core/RNBridge';
 
 const HEADER_HEIGHT = COVER_HEIGHT + AVATAR_SIZE / 2;
 const DIVIDER_HEIGHT = 10;
@@ -50,7 +52,6 @@ export default function MomentsPage({onBack}: Props) {
     () => (
       <>
         <MomentsHeader scrollY={scrollY} />
-        <View style={styles.listDivider} />
       </>
     ),
     [scrollY],
@@ -76,26 +77,72 @@ export default function MomentsPage({onBack}: Props) {
     outputRange: [0, 1],
     extrapolate: 'clamp',
   });
+  const floatingNavOpacity = scrollY.interpolate({
+    inputRange: [HEADER_HEIGHT - 90, HEADER_HEIGHT - 30],
+    outputRange: [1, 0],
+    extrapolate: 'clamp',
+  });
+  const showBackButton = typeof onBack === 'function';
+  const handleBack = () => {
+    if (typeof onBack === 'function') {
+      onBack();
+      return;
+    }
+
+    if (RNBridge.navbar.isSupported) {
+      RNBridge.navbar.goBack();
+    }
+  };
 
   if (vm.loading) {
     return (
-      <View style={[styles.center, {paddingTop: insets.top}]}>
-        <ActivityIndicator size="large" color="#07C160" />
-      </View>
+      <PageScaffold
+        navMode="rn"
+        title="朋友圈"
+        backgroundColor="#EDEDED"
+        headerVariant="immersive"
+        showHeader={false}>
+        <View style={[styles.center, {paddingTop: insets.top}]}>
+          <ActivityIndicator size="large" color="#07C160" />
+        </View>
+      </PageScaffold>
     );
   }
 
   return (
-    <View style={[styles.container, {paddingBottom: insets.bottom}]}>
-      {/* 顶部导航栏 */}
+    <PageScaffold
+      navMode="rn"
+      title="朋友圈"
+      backgroundColor="#EDEDED"
+      headerVariant="immersive"
+      showHeader={false}>
+    <View style={styles.container}>
+      {/* 沉浸态顶部层 */}
+      <Animated.View
+        style={[
+          styles.floatingNav,
+          {paddingTop: insets.top, opacity: floatingNavOpacity},
+        ]}>
+        {showBackButton || RNBridge.navbar.isSupported ? (
+          <TouchableOpacity onPress={handleBack} style={styles.floatingBackBtn}>
+            <Text style={styles.floatingBackText}>‹</Text>
+          </TouchableOpacity>
+        ) : null}
+      </Animated.View>
+
+      {/* 滚动态导航栏 */}
       <Animated.View
         style={[
           styles.navbar,
           {paddingTop: insets.top, opacity: navOpacity, backgroundColor: '#07C160'},
         ]}>
-        <TouchableOpacity onPress={onBack} style={styles.backBtn}>
-          <Text style={styles.backText}>‹ 返回</Text>
-        </TouchableOpacity>
+        {showBackButton || RNBridge.navbar.isSupported ? (
+          <TouchableOpacity onPress={handleBack} style={styles.backBtn}>
+            <Text style={styles.backText}>‹ 返回</Text>
+          </TouchableOpacity>
+        ) : (
+          <View style={styles.backBtn} />
+        )}
         <Text style={styles.navTitle}>朋友圈</Text>
         <View style={styles.backBtn} />
       </Animated.View>
@@ -120,16 +167,20 @@ export default function MomentsPage({onBack}: Props) {
           {useNativeDriver: false},
         )}
         scrollEventThrottle={16}
-        contentContainerStyle={{paddingBottom: 20}}
+        contentContainerStyle={styles.listContent}
+        style={styles.list}
         showsVerticalScrollIndicator={false}
       />
     </View>
+    </PageScaffold>
   );
 }
 
 const styles = StyleSheet.create({
   container: {flex: 1, backgroundColor: '#EDEDED'},
   center: {flex: 1, justifyContent: 'center', alignItems: 'center'},
+  list: {flex: 1, backgroundColor: '#EDEDED'},
+  listContent: {paddingBottom: 12},
   navbar: {
     position: 'absolute',
     top: 0,
@@ -142,11 +193,33 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingBottom: 10,
   },
+  floatingNav: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    zIndex: 11,
+    paddingHorizontal: 12,
+    paddingBottom: 10,
+  },
+  floatingBackBtn: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(0,0,0,0.18)',
+  },
+  floatingBackText: {
+    color: '#FFFFFF',
+    fontSize: 28,
+    lineHeight: 30,
+    fontWeight: '400',
+  },
   backBtn: {width: 60},
   backText: {color: '#fff', fontSize: 17},
   navTitle: {color: '#fff', fontSize: 17, fontWeight: '600'},
   divider: {height: DIVIDER_HEIGHT, backgroundColor: '#EDEDED'},
-  listDivider: {height: DIVIDER_HEIGHT, backgroundColor: '#EDEDED'},
   footer: {paddingVertical: 20, alignItems: 'center'},
   noMoreText: {color: '#999', fontSize: 13},
 });

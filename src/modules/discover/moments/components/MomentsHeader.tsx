@@ -53,9 +53,6 @@ export default function MomentsHeader({scrollY}: Props) {
         resizeMode="cover"
       />
 
-      {/* 遮罩渐变 */}
-      <View style={styles.overlay} />
-
       {/* 个人信息（右下角） */}
       <View style={styles.profileRow}>
         <Text style={styles.name}>{MY_NAME}</Text>
@@ -76,6 +73,7 @@ const styles = StyleSheet.create({
   container: {
     width: SCREEN_WIDTH,
     height: COVER_HEIGHT + AVATAR_SIZE / 2,
+    backgroundColor: '#FFFFFF',
     overflow: 'hidden',
   },
   cover: {
@@ -84,15 +82,6 @@ const styles = StyleSheet.create({
     left: 0,
     width: SCREEN_WIDTH,
     height: COVER_HEIGHT,
-  },
-  overlay: {
-    position: 'absolute',
-    bottom: AVATAR_SIZE / 2,
-    left: 0,
-    right: 0,
-    height: 80,
-    // 渐变效果用纯色半透明模拟
-    backgroundColor: 'rgba(0,0,0,0.25)',
   },
   profileRow: {
     position: 'absolute',
@@ -107,17 +96,15 @@ const styles = StyleSheet.create({
     fontSize: 17,
     fontWeight: '600',
     marginBottom: 8,
-    textShadowColor: 'rgba(0,0,0,0.4)',
+    textShadowColor: 'rgba(0,0,0,0.55)',
     textShadowOffset: {width: 0, height: 1},
-    textShadowRadius: 3,
+    textShadowRadius: 6,
   },
   avatar: {
     width: AVATAR_SIZE,
     height: AVATAR_SIZE,
     borderRadius: 6,
-    borderWidth: 2,
-    borderColor: '#fff',
-    backgroundColor: '#EEE',
+    backgroundColor: 'transparent',
   },
   cameraBtn: {
     position: 'absolute',

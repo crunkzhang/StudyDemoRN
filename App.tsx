@@ -11,10 +11,29 @@ import ChatDetailPage from './src/modules/chat/pages/ChatDetailPage';
 import UserProfilePage from './src/modules/profile/pages/UserProfilePage';
 import SettingsPage from './src/modules/settings/pages/SettingsPage';
 import MomentsPage from './src/modules/discover/moments/pages/MomentsPage';
+import GameCenterPage from './src/modules/discover/game/pages/GameCenterPage';
+import NearbyPage from './src/modules/discover/nearby/pages/NearbyPage';
+import ScanPage from './src/modules/discover/scan/pages/ScanPage';
+import SearchPage from './src/modules/discover/search/pages/SearchPage';
+import ShakePage from './src/modules/discover/shake/pages/ShakePage';
+import ShoppingPage from './src/modules/discover/shopping/pages/ShoppingPage';
+import VideoChannelPage from './src/modules/discover/videoChannel/pages/VideoChannelPage';
 
 const WECHAT_GREEN = '#07C160';
 
-type Page = 'home' | 'chat' | 'profile' | 'settings' | 'moments';
+type Page =
+  | 'home'
+  | 'chat'
+  | 'profile'
+  | 'settings'
+  | 'moments'
+  | 'videoChannel'
+  | 'scan'
+  | 'shake'
+  | 'nearby'
+  | 'shopping'
+  | 'search'
+  | 'games';
 
 function App() {
   const [page, setPage] = useState<Page>('home');
@@ -29,6 +48,20 @@ function App() {
         return <SettingsPage />;
       case 'moments':
         return <MomentsPage onBack={() => setPage('home')} />;
+      case 'videoChannel':
+        return <VideoChannelPage />;
+      case 'scan':
+        return <ScanPage />;
+      case 'shake':
+        return <ShakePage />;
+      case 'nearby':
+        return <NearbyPage />;
+      case 'shopping':
+        return <ShoppingPage />;
+      case 'search':
+        return <SearchPage />;
+      case 'games':
+        return <GameCenterPage />;
       default:
         return <HomePage onNavigate={setPage} />;
     }
@@ -60,6 +93,13 @@ function HomePage({onNavigate}: {onNavigate: (p: Page) => void}) {
           {key: 'profile' as Page, label: '个人资料 UserProfile'},
           {key: 'settings' as Page, label: '设置 Settings'},
           {key: 'moments' as Page, label: '朋友圈 Moments'},
+          {key: 'videoChannel' as Page, label: '视频号 VideoChannel'},
+          {key: 'scan' as Page, label: '扫一扫 Scan'},
+          {key: 'shake' as Page, label: '摇一摇 Shake'},
+          {key: 'nearby' as Page, label: '附近的人 Nearby'},
+          {key: 'shopping' as Page, label: '购物 Shopping'},
+          {key: 'search' as Page, label: '搜一搜 Search'},
+          {key: 'games' as Page, label: '游戏中心 GameCenter'},
         ]).map(item => (
           <TouchableOpacity
             key={item.key}
