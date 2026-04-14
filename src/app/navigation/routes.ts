@@ -61,6 +61,30 @@ export const routes: Record<RouteName, RouteEntry> = {
     description: '游戏容器',
     component: () => require('../../modules/discover/game/pages/GameContainerPage').default,
   },
+  contactNewFriends: {
+    description: '新的朋友',
+    component: () => require('../../modules/contacts/views/NewFriendsScreen').default,
+  },
+  contactGroups: {
+    description: '群聊',
+    component: () => require('../../modules/contacts/views/GroupChatsScreen').default,
+  },
+  contactTags: {
+    description: '标签',
+    component: () => require('../../modules/contacts/views/TagsScreen').default,
+  },
+  contactTagCreate: {
+    description: '新建标签',
+    component: () => require('../../modules/contacts/views/TagCreateScreen').default,
+  },
+  contactOfficialAccounts: {
+    description: '公众号',
+    component: () => require('../../modules/contacts/views/OfficialAccountsScreen').default,
+  },
+  contactSearch: {
+    description: '通讯录搜索',
+    component: () => require('../../modules/contacts/views/SearchScreen').default,
+  },
 };
 
 const initEntries = (Object.entries(routes) as [RouteName, RouteEntry][]).filter(

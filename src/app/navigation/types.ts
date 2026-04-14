@@ -12,6 +12,12 @@ export interface RouteParamsMap {
   search: {keyword?: string};
   gameCenter: void;
   gameContainer: {gameId: string};
+  contactNewFriends: void;
+  contactGroups: void;
+  contactTags: void;
+  contactTagCreate: void;
+  contactOfficialAccounts: void;
+  contactSearch: void;
 }
 
 export type RouteName = keyof RouteParamsMap;
