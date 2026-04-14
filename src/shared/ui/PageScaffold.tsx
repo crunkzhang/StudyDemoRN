@@ -3,7 +3,7 @@ import {StyleSheet, View, ViewStyle} from 'react-native';
 import {Edge, SafeAreaView} from 'react-native-safe-area-context';
 import ScreenHeader from './ScreenHeader';
 import {useNavbar} from '../bridges/hooks/useNavbar';
-import type {NavbarAppearance, NavbarRightItem} from '../bridges/core/RNBridge';
+import type {NavbarAppearance, NavbarRightItem} from '../bridges/common/navbar/navbarBridge';
 
 type NavMode = 'native' | 'rn';
 type HeaderVariant = 'default' | 'search' | 'immersive';

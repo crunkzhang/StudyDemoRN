@@ -1,23 +1,48 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
 import PageScaffold from '../../../../shared/ui/PageScaffold';
 import {useNavbarRightAction} from '../../../../shared/bridges/hooks/useNavbar';
 import {useScanAlbum} from '../../../../shared/bridges/hooks/useScanAlbum';
 import {useToast} from '../../../../shared/bridges/hooks/useToast';
+import {deviceBridge} from '../../../../shared/bridges/common/device/deviceBridge';
+import {cacheBridge} from '../../../../shared/bridges/common/cache/cacheBridge';
+import {permissionBridge} from '../../../../shared/bridges/common/permission/permissionBridge';
+
+const RECENT_KEY = 'scan.recent';
 
 const ScanPage: React.FC = () => {
   const {showToast} = useToast();
-  const {openScanAlbum} = useScanAlbum({
-    onResult: result => {
+  const {openScanAlbum} = useScanAlbum();
+
+  // 同步读：无闪烁
+  const torchSupported = deviceBridge.isTorchSupported();
+  const appVersion = deviceBridge.getAppVersion();
+
+  // 同步读本地缓存
+  const [recent, setRecent] = useState<string | null>(() => cacheBridge.getString(RECENT_KEY));
+
+  // Promise：进入页面请求相机权限
+  useEffect(() => {
+    (async () => {
+      const status = await permissionBridge.requestCamera();
+      if (status !== 'granted') {
+        showToast('相机权限未授予', 1.8);
+      }
+    })();
+  }, [showToast]);
+
+  const handleAlbum = useCallback(async () => {
+    try {
+      const result = await openScanAlbum('从相册选取');
       if (result.content) {
         showToast(`识别结果：${result.content}`, 2.2);
+        cacheBridge.setString(RECENT_KEY, result.content);
+        setRecent(result.content);
       }
-    },
-  });
-
-  const handleAlbum = useCallback(() => {
-    openScanAlbum('从相册选取');
-  }, [openScanAlbum]);
+    } catch {
+      // 用户取消或失败
+    }
+  }, [openScanAlbum, showToast]);
 
   useNavbarRightAction('scan_album', handleAlbum);
 
@@ -61,18 +86,22 @@ const ScanPage: React.FC = () => {
 
         <View style={styles.bottomPanel}>
           <View style={styles.recordCard}>
-            <View>
-              <Text style={styles.actionEyebrow}>最近使用</Text>
+            <View style={{flex: 1}}>
+              <Text style={styles.actionEyebrow}>最近使用 · v{appVersion}</Text>
               <Text style={styles.actionTitle}>我的扫码记录</Text>
-              <Text style={styles.actionHint}>查看最近识别结果与历史跳转</Text>
+              <Text style={styles.actionHint} numberOfLines={1}>
+                {recent ? `上次识别：${recent}` : '查看最近识别结果与历史跳转'}
+              </Text>
             </View>
             <Text style={styles.recordArrow}>›</Text>
           </View>
           <View style={styles.actionRow}>
-            <View style={[styles.smallAction, styles.smallActionMuted]}>
-              <Text style={styles.smallActionTitle}>手电筒</Text>
-              <Text style={styles.smallActionHint}>弱光环境增强识别</Text>
-            </View>
+            {torchSupported && (
+              <View style={[styles.smallAction, styles.smallActionMuted]}>
+                <Text style={styles.smallActionTitle}>手电筒</Text>
+                <Text style={styles.smallActionHint}>弱光环境增强识别</Text>
+              </View>
+            )}
             <Pressable onPress={handleAlbum} style={[styles.smallAction, styles.smallActionAccent]}>
               <Text style={styles.smallActionTitle}>从相册选取</Text>
               <Text style={styles.smallActionHint}>快速识别已保存图片</Text>

@@ -1,40 +1,27 @@
-import {useEffect, useLayoutEffect, useMemo} from 'react';
-import {RNBridge} from '../core/RNBridge';
-import type {NavbarOptions} from '../core/RNBridge';
+import {useLayoutEffect} from 'react';
+import {navbarBridge} from '../common/navbar/navbarBridge';
+import {useAppEvent} from '../../events/core/useAppEvent';
+import {EventTopic} from '../../events/core/registry';
+import type {NavbarOptions} from '../common/navbar/navbarBridge';
 
 function useNavbar(options: NavbarOptions) {
   const {animated, appearance, mode, rightItem, title} = options;
 
   useLayoutEffect(() => {
-    RNBridge.navbar.setOptions({animated, appearance, mode, rightItem, title});
+    navbarBridge.setOptions({animated, appearance, mode, rightItem, title});
   }, [animated, appearance, mode, rightItem, title]);
-
-  return useMemo(
-    () => ({
-      goBack(animatedValue = true) {
-        RNBridge.navbar.goBack(animatedValue);
-      },
-      isSupported: RNBridge.navbar.isSupported,
-    }),
-    [],
-  );
 }
 
 function useNavbarRightAction(actionId: string, handler: () => void) {
-  useEffect(() => {
-    const subscription = RNBridge.navbar.addRightItemPressListener(
-      receivedActionId => {
-        if (receivedActionId === actionId) {
-          handler();
-        }
-      },
-    );
-
-    return () => {
-      subscription.remove();
-    };
-  }, [actionId, handler]);
+  useAppEvent(EventTopic.RightItemPress, event => {
+    if (event.actionId === actionId) handler();
+  });
 }
 
 export {useNavbar, useNavbarRightAction};
-export type {NavbarAppearance, NavbarMode, NavbarOptions, NavbarRightItem} from '../core/RNBridge';
+export type {
+  NavbarAppearance,
+  NavbarMode,
+  NavbarOptions,
+  NavbarRightItem,
+} from '../common/navbar/navbarBridge';

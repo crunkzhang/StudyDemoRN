@@ -1,11 +1,11 @@
 import {useMemo} from 'react';
-import {RNBridge} from '../core/RNBridge';
+import {toastBridge} from '../common/toast/toastBridge';
 
 export function useToast() {
   return useMemo(
     () => ({
       showToast(message: string, duration?: number) {
-        RNBridge.toast.show({message, duration});
+        toastBridge.show({message, duration});
       },
     }),
     [],

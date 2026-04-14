@@ -20,12 +20,23 @@ export type ParamsArg<K extends RouteName> = RouteParamsMap[K] extends void
   ? []
   : [RouteParamsMap[K]];
 
+export interface PresentOptions {
+  presentationStyle?: 'fullScreen' | 'sheet';
+  animated?: boolean;
+}
+
 export interface NavigationAPI {
   push<K extends RouteName>(name: K, ...args: ParamsArg<K>): void;
   pop(result?: unknown): void;
   replace<K extends RouteName>(name: K, ...args: ParamsArg<K>): void;
   pushURL(url: string): void;
   replaceURL(url: string): void;
+  present<K extends RouteName>(
+    name: K,
+    params: ParamsArg<K>[0] | undefined,
+    opts?: PresentOptions,
+  ): void;
+  dismiss(animated?: boolean): void;
 }
 
 export interface PageHostProps {

@@ -1,8 +1,4 @@
-import {
-  assertSerializable,
-  getNativeModule,
-  warnMissing,
-} from '../../core/bridgeUtils';
+import NativeNavigationBridge from './NativeNavigationBridge';
 
 interface PushPayload {
   pageName: string;
@@ -10,43 +6,40 @@ interface PushPayload {
   animated?: boolean;
 }
 
+export type PresentationStyle = 'fullScreen' | 'sheet';
+
+interface PresentPayload extends PushPayload {
+  presentationStyle?: PresentationStyle;
+}
+
 interface PopPayload {
   animated?: boolean;
   result?: unknown;
 }
 
-interface Spec {
-  push?: (payload: PushPayload) => void;
-  pop?: (payload: PopPayload) => void;
-  replace?: (payload: PushPayload) => void;
-  pushURL?: (url: string) => void;
-  replaceURL?: (url: string) => void;
-}
-
-const MODULE = 'NavigationBridge';
-const m = getNativeModule<Spec>(MODULE);
-
 export const navigationBridge = {
   push(payload: PushPayload) {
-    assertSerializable(payload.params);
-    if (!m?.push) return warnMissing(MODULE, 'push');
-    m.push(payload);
+    NativeNavigationBridge.push(payload);
   },
   pop(payload: PopPayload = {}) {
-    if (!m?.pop) return warnMissing(MODULE, 'pop');
-    m.pop(payload);
+    NativeNavigationBridge.pop(payload);
+  },
+  goBack(animated = true) {
+    NativeNavigationBridge.goBack({animated});
+  },
+  present(payload: PresentPayload) {
+    NativeNavigationBridge.present(payload);
+  },
+  dismiss(animated = true) {
+    NativeNavigationBridge.dismiss({animated});
   },
   replace(payload: PushPayload) {
-    assertSerializable(payload.params);
-    if (!m?.replace) return warnMissing(MODULE, 'replace');
-    m.replace(payload);
+    NativeNavigationBridge.replace(payload);
   },
   pushURL(url: string) {
-    if (!m?.pushURL) return warnMissing(MODULE, 'pushURL');
-    m.pushURL(url);
+    NativeNavigationBridge.pushURL(url);
   },
   replaceURL(url: string) {
-    if (!m?.replaceURL) return warnMissing(MODULE, 'replaceURL');
-    m.replaceURL(url);
+    NativeNavigationBridge.replaceURL(url);
   },
 };

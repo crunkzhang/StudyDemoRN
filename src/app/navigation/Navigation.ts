@@ -1,5 +1,5 @@
 import {navigationBridge} from '../../shared/bridges/common/navigation/navigationBridge';
-import type {NavigationAPI, ParamsArg, RouteName} from './types';
+import type {NavigationAPI, ParamsArg, PresentOptions, RouteName} from './types';
 
 export const Navigation: NavigationAPI = {
   push<K extends RouteName>(name: K, ...args: ParamsArg<K>) {
@@ -18,5 +18,20 @@ export const Navigation: NavigationAPI = {
   },
   replaceURL(url: string) {
     navigationBridge.replaceURL(url);
+  },
+  present<K extends RouteName>(
+    name: K,
+    params?: ParamsArg<K>[0],
+    opts?: PresentOptions,
+  ) {
+    navigationBridge.present({
+      pageName: name,
+      params: (params ?? null) as Record<string, unknown> | null,
+      animated: opts?.animated,
+      presentationStyle: opts?.presentationStyle,
+    });
+  },
+  dismiss(animated = true) {
+    navigationBridge.dismiss(animated);
   },
 };

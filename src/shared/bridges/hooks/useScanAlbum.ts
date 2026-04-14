@@ -1,37 +1,17 @@
-import {useEffect, useMemo} from 'react';
-import {RNBridge} from '../core/RNBridge';
+import {useMemo} from 'react';
+import {scanBridge} from '../business/scan/scanBridge';
+import type {ScanAlbumResult} from '../business/scan/scanBridge';
 
-interface ScanAlbumResult {
-  content?: string;
-  source?: string;
-}
+export type {ScanAlbumResult};
 
-interface UseScanAlbumOptions {
-  onResult?: (result: ScanAlbumResult) => void;
-}
-
-export function useScanAlbum(options: UseScanAlbumOptions = {}) {
-  const {onResult} = options;
-
-  useEffect(() => {
-    if (!onResult) {
-      return;
-    }
-
-    const subscription = RNBridge.scan.addAlbumResultListener(result => {
-      onResult(result);
-    });
-
-    return () => {
-      subscription.remove();
-    };
-  }, [onResult]);
-
+/**
+ * Promise 形态：调用 openScanAlbum 直接 await 拿结果，
+ * 不再需要额外订阅 listener。
+ */
+export function useScanAlbum() {
   return useMemo(
     () => ({
-      openScanAlbum(title = '从相册选取') {
-        RNBridge.scan.openAlbum({title});
-      },
+      openScanAlbum: (title?: string) => scanBridge.openAlbum({title}),
     }),
     [],
   );
