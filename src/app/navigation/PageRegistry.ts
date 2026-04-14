@@ -1,5 +1,5 @@
 import type {ComponentType} from 'react';
-import {routes} from './routes';
+import {INIT_PAGE_NAME, routes} from './routes';
 import type {RouteName} from './types';
 
 const cache = new Map<RouteName, ComponentType<any>>();
@@ -24,5 +24,11 @@ export const PageRegistry = {
   },
   has(name: string): name is RouteName {
     return Object.prototype.hasOwnProperty.call(routes, name);
+  },
+  describe(name: RouteName): string {
+    return routes[name]?.description ?? String(name);
+  },
+  getInitPageName(): RouteName {
+    return INIT_PAGE_NAME;
   },
 };

@@ -1,29 +1,24 @@
 import React from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {Navigation} from '../../../app/navigation/Navigation';
+import {routes} from '../../../app/navigation/routes';
 import type {RouteName} from '../../../app/navigation/types';
 
 const WECHAT_GREEN = '#07C160';
 
-interface MenuItem {
-  key: RouteName;
-  label: string;
-  params?: Record<string, unknown>;
-}
+const DEBUG_PARAMS: Partial<Record<RouteName, Record<string, unknown>>> = {
+  chat: {chatId: 'c1', contactName: '张伟'},
+  userProfile: {userId: 'u1'},
+  gameContainer: {gameId: 'tapRush'},
+};
 
-const MENU: MenuItem[] = [
-  {key: 'chat', label: '聊天详情 ChatDetail', params: {chatId: 'c1', contactName: '张伟'}},
-  {key: 'userProfile', label: '个人资料 UserProfile', params: {userId: 'u1'}},
-  {key: 'settings', label: '设置 Settings'},
-  {key: 'moments', label: '朋友圈 Moments'},
-  {key: 'videoChannel', label: '视频号 VideoChannel'},
-  {key: 'scan', label: '扫一扫 Scan'},
-  {key: 'shake', label: '摇一摇 Shake'},
-  {key: 'nearby', label: '附近的人 Nearby'},
-  {key: 'shopping', label: '购物 Shopping'},
-  {key: 'search', label: '搜一搜 Search'},
-  {key: 'gameCenter', label: '游戏中心 GameCenter'},
-];
+const MENU = (Object.entries(routes) as [RouteName, {description: string; initPage?: boolean}][])
+  .filter(([, cfg]) => !cfg.initPage)
+  .map(([key, cfg]) => ({
+    key,
+    label: `${cfg.description} ${key}`,
+    params: DEBUG_PARAMS[key],
+  }));
 
 export default function DebugHomePage() {
   return (

@@ -47,6 +47,11 @@ const PageHost: React.FC<PageHostProps> = ({pageName, params}) => {
       />
     );
   }
+  if (__DEV__) {
+    console.log(
+      `[RN] open page: ${pageName} (${PageRegistry.describe(pageName as RouteName)})`,
+    );
+  }
   const Component = PageRegistry.resolve(pageName as RouteName);
   if (!Component) {
     return (

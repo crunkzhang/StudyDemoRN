@@ -2,61 +2,73 @@ import type {ComponentType} from 'react';
 import type {RouteName} from './types';
 
 interface RouteEntry {
-  path: string;
+  description: string;
   component: () => ComponentType<any>;
+  initPage?: boolean;
 }
 
 export const routes: Record<RouteName, RouteEntry> = {
   debugHome: {
-    path: '/debug',
+    description: 'RN Debug 首页',
     component: () => require('../../modules/debug/pages/DebugHomePage').default,
+    initPage: true,
   },
   chat: {
-    path: '/chat/:chatId',
+    description: '聊天详情',
     component: () => require('../../modules/chat/pages/ChatDetailPage').default,
   },
   userProfile: {
-    path: '/profile/:userId',
+    description: '个人资料',
     component: () => require('../../modules/profile/pages/UserProfilePage').default,
   },
   settings: {
-    path: '/settings',
+    description: '设置',
     component: () => require('../../modules/profile/pages/SettingsPage').default,
   },
   moments: {
-    path: '/moments',
+    description: '朋友圈',
     component: () => require('../../modules/discover/moments/pages/MomentsPage').default,
   },
   videoChannel: {
-    path: '/video-channel',
+    description: '视频号',
     component: () => require('../../modules/discover/videoChannel/pages/VideoChannelPage').default,
   },
   scan: {
-    path: '/scan',
+    description: '扫一扫',
     component: () => require('../../modules/discover/scan/pages/ScanPage').default,
   },
   shake: {
-    path: '/shake',
+    description: '摇一摇',
     component: () => require('../../modules/discover/shake/pages/ShakePage').default,
   },
   nearby: {
-    path: '/nearby',
+    description: '附近的人',
     component: () => require('../../modules/discover/nearby/pages/NearbyPage').default,
   },
   shopping: {
-    path: '/shopping',
+    description: '购物',
     component: () => require('../../modules/discover/shopping/pages/ShoppingPage').default,
   },
   search: {
-    path: '/search',
+    description: '搜一搜',
     component: () => require('../../modules/discover/search/pages/SearchPage').default,
   },
   gameCenter: {
-    path: '/games',
+    description: '游戏中心',
     component: () => require('../../modules/discover/game/pages/GameCenterPage').default,
   },
   gameContainer: {
-    path: '/games/:gameId',
+    description: '游戏容器',
     component: () => require('../../modules/discover/game/pages/GameContainerPage').default,
   },
 };
+
+const initEntries = (Object.entries(routes) as [RouteName, RouteEntry][]).filter(
+  ([, v]) => v.initPage,
+);
+if (initEntries.length !== 1) {
+  throw new Error(
+    `[routes] 必须有且仅有一个 initPage: true，当前为 ${initEntries.length}`,
+  );
+}
+export const INIT_PAGE_NAME: RouteName = initEntries[0][0];
