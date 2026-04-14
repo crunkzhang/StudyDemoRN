@@ -1,4 +1,5 @@
 import {NativeEventEmitter, NativeModules, Platform} from 'react-native';
+import {getNativeModule, warnMissing} from '../../core/bridgeUtils';
 
 type NavbarMode = 'native' | 'rn';
 
@@ -23,17 +24,25 @@ interface NavbarOptions {
   appearance?: NavbarAppearance;
 }
 
-const {NavbarBridge} = NativeModules;
+interface Spec {
+  setOptions?: (payload: Required<Omit<NavbarOptions, 'rightItem' | 'appearance'>> & {
+    rightItem: NavbarRightItem | null;
+    appearance: NavbarAppearance | null;
+  }) => void;
+  goBack?: (payload: {animated: boolean}) => void;
+}
 
-const isNavbarSupported = Platform.OS === 'ios' && !!NavbarBridge;
-const navbarEmitter = isNavbarSupported && NavbarBridge ? new NativeEventEmitter(NavbarBridge) : null;
+const MODULE = 'NavbarBridge';
+const m = getNativeModule<Spec>(MODULE);
+
+const isNavbarSupported = Platform.OS === 'ios' && !!m;
+const navbarEmitter =
+  isNavbarSupported && m ? new NativeEventEmitter(NativeModules[MODULE]) : null;
 
 function setOptions(options: NavbarOptions) {
-  if (!isNavbarSupported || !NavbarBridge?.setOptions) {
-    return;
-  }
-
-  NavbarBridge.setOptions({
+  if (!isNavbarSupported) return;
+  if (!m?.setOptions) return warnMissing(MODULE, 'setOptions');
+  m.setOptions({
     mode: options.mode,
     title: options.title ?? '',
     animated: options.animated ?? false,
@@ -43,32 +52,22 @@ function setOptions(options: NavbarOptions) {
 }
 
 function goBack(animated = true) {
-  if (!isNavbarSupported || !NavbarBridge?.goBack) {
-    return;
-  }
-
-  NavbarBridge.goBack({animated});
+  if (!isNavbarSupported) return;
+  if (!m?.goBack) return warnMissing(MODULE, 'goBack');
+  m.goBack({animated});
 }
 
 function addRightItemPressListener(listener: (actionId: string) => void) {
   if (!navbarEmitter) {
     return {remove: () => {}};
   }
-
   return navbarEmitter.addListener(
     'navbarBridge:rightItemPress',
     (event: {actionId?: string}) => {
-      if (event?.actionId) {
-        listener(event.actionId);
-      }
+      if (event?.actionId) listener(event.actionId);
     },
   );
 }
 
-export {
-  addRightItemPressListener,
-  goBack,
-  isNavbarSupported,
-  setOptions,
-};
+export {addRightItemPressListener, goBack, isNavbarSupported, setOptions};
 export type {NavbarAppearance, NavbarMode, NavbarOptions, NavbarRightItem};

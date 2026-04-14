@@ -1,4 +1,4 @@
-import {navigationBridge} from '../../shared/bridges/native/navigationBridge';
+import {navigationBridge} from '../../shared/bridges/common/navigation/navigationBridge';
 import type {NavigationAPI, ParamsArg, RouteName} from './types';
 
 export const Navigation: NavigationAPI = {

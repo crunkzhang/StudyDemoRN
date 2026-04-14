@@ -1,4 +1,5 @@
 import {NativeEventEmitter, NativeModules, Platform} from 'react-native';
+import {getNativeModule, warnMissing} from '../../core/bridgeUtils';
 
 interface OpenAlbumOptions {
   title?: string;
@@ -9,20 +10,21 @@ interface ScanAlbumResult {
   source?: string;
 }
 
-const {ScanBridge} = NativeModules;
+interface Spec {
+  openAlbum?: (payload: {title: string}) => void;
+}
 
-const isSupported = Platform.OS === 'ios' && !!ScanBridge;
+const MODULE = 'ScanBridge';
+const m = getNativeModule<Spec>(MODULE);
+
+const isSupported = Platform.OS === 'ios' && !!m;
 const scanEmitter =
-  isSupported && ScanBridge ? new NativeEventEmitter(ScanBridge) : null;
+  isSupported && m ? new NativeEventEmitter(NativeModules[MODULE]) : null;
 
 function openScanAlbum(options: OpenAlbumOptions = {}) {
-  if (!isSupported || !ScanBridge?.openAlbum) {
-    return;
-  }
-
-  ScanBridge.openAlbum({
-    title: options.title ?? '从相册选取',
-  });
+  if (!isSupported) return;
+  if (!m?.openAlbum) return warnMissing(MODULE, 'openAlbum');
+  m.openAlbum({title: options.title ?? '从相册选取'});
 }
 
 function addScanAlbumResultListener(
@@ -31,7 +33,6 @@ function addScanAlbumResultListener(
   if (!scanEmitter) {
     return {remove: () => {}};
   }
-
   return scanEmitter.addListener(
     'scanBridge:albumResult',
     (event: ScanAlbumResult) => {

@@ -1,6 +1,6 @@
-import * as navbar from '../native/navbarBridge';
-import * as toast from '../native/toastBridge';
-import * as scan from '../native/scanBridge';
+import * as navbar from '../common/navbar/navbarBridge';
+import * as toast from '../common/toast/toastBridge';
+import * as scan from '../business/scan/scanBridge';
 
 const RNBridge = {
   navbar: {
@@ -25,4 +25,4 @@ export type {
   NavbarMode,
   NavbarOptions,
   NavbarRightItem,
-} from '../native/navbarBridge';
+} from '../common/navbar/navbarBridge';
