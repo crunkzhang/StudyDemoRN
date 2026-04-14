@@ -10,6 +10,7 @@ import {
   View,
 } from 'react-native';
 import PageScaffold from '../../../shared/ui/PageScaffold';
+import {useRouteParams} from '../../../app/navigation/useRouteParams';
 
 interface Message {
   id: string;
@@ -17,11 +18,6 @@ interface Message {
   isMine: boolean;
   time: string;
   showTime?: boolean;
-}
-
-interface ChatDetailProps {
-  chatId?: string;
-  contactName?: string;
 }
 
 const mockMessages: Message[] = [
@@ -45,7 +41,8 @@ const mockMessages: Message[] = [
   {id: '18', text: '在看 Swift 相关的，准备学原生开发', isMine: true, time: '09:22'},
 ];
 
-const ChatDetailPage: React.FC<ChatDetailProps> = ({contactName = '聊天'}) => {
+const ChatDetailPage: React.FC = () => {
+  const {contactName = '聊天'} = useRouteParams('chat');
   const flatListRef = useRef<FlatList<Message>>(null);
 
   useEffect(() => {

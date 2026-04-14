@@ -10,7 +10,9 @@ import {
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import WebView, {WebViewMessageEvent} from 'react-native-webview';
-import {GameDefinition} from '../data/games';
+import {GAMES} from '../data/games';
+import {useRouteParams} from '../../../../app/navigation/useRouteParams';
+import {Navigation} from '../../../../app/navigation/Navigation';
 
 const WECHAT_GREEN = '#07C160';
 
@@ -19,11 +21,6 @@ interface WebBridgeMessage {
   payload?: {
     score?: number;
   };
-}
-
-interface GameContainerPageProps {
-  game: GameDefinition;
-  onBack: () => void;
 }
 
 const injectedCommand = (type: 'restart' | 'pause' | 'resume') => {
@@ -36,7 +33,9 @@ const injectedCommand = (type: 'restart' | 'pause' | 'resume') => {
   return `window.__tapRush && window.__tapRush.${methodMap[type]}(); true;`;
 };
 
-const GameContainerPage: React.FC<GameContainerPageProps> = ({game, onBack}) => {
+const GameContainerPage: React.FC = () => {
+  const {gameId} = useRouteParams('gameContainer');
+  const game = useMemo(() => GAMES.find(g => g.id === gameId), [gameId]);
   const webViewRef = useRef<WebView>(null);
   const [score, setScore] = useState(0);
   const [statusText, setStatusText] = useState('正在连接游戏...');
@@ -44,11 +43,28 @@ const GameContainerPage: React.FC<GameContainerPageProps> = ({game, onBack}) => 
 
   const source = useMemo(
     () => ({
-      html: game.html,
+      html: game?.html ?? '',
       baseUrl: Platform.OS === 'android' ? 'https://game.local/' : '',
     }),
-    [game.html],
+    [game],
   );
+
+  if (!game) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <View style={styles.header}>
+          <Pressable onPress={() => Navigation.pop()} style={styles.headerButton}>
+            <Text style={styles.headerButtonText}>返回</Text>
+          </Pressable>
+          <View style={styles.headerCenter}>
+            <Text style={styles.headerTitle}>游戏不存在</Text>
+            <Text style={styles.headerSubtitle}>gameId: {gameId}</Text>
+          </View>
+          <View style={styles.headerButton} />
+        </View>
+      </SafeAreaView>
+    );
+  }
 
   const handleMessage = (event: WebViewMessageEvent) => {
     try {
@@ -66,7 +82,7 @@ const GameContainerPage: React.FC<GameContainerPageProps> = ({game, onBack}) => 
           setStatusText(`本局结束，得分 ${message.payload?.score ?? 0}`);
           break;
         case 'exit':
-          onBack();
+          Navigation.pop();
           break;
         default:
           break;
@@ -84,7 +100,7 @@ const GameContainerPage: React.FC<GameContainerPageProps> = ({game, onBack}) => 
   const handleClose = () => {
     Alert.alert('退出游戏', '返回游戏中心？', [
       {text: '继续玩', style: 'cancel'},
-      {text: '返回', style: 'default', onPress: onBack},
+      {text: '返回', style: 'default', onPress: () => Navigation.pop()},
     ]);
   };
 

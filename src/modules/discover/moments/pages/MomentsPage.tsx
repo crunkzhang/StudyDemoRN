@@ -19,11 +19,7 @@ import PageScaffold from '../../../../shared/ui/PageScaffold';
 
 const HEADER_HEIGHT = COVER_HEIGHT + AVATAR_OVERHANG;
 
-interface Props {
-  onBack?: () => void;
-}
-
-export default function MomentsPage(_props: Props) {
+export default function MomentsPage() {
   const insets = useSafeAreaInsets();
   const scrollY = React.useRef(new Animated.Value(0)).current;
   const vm = useMomentsViewModel();

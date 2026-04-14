@@ -1,32 +1,18 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback} from 'react';
 import {Pressable, ScrollView, StyleSheet, Text, View} from 'react-native';
-import {GAMES, GameDefinition} from '../data/games';
+import {GAMES} from '../data/games';
 import PageScaffold from '../../../../shared/ui/PageScaffold';
 import {useNavbarRightAction} from '../../../../shared/bridges/hooks/useNavbar';
+import {Navigation} from '../../../../app/navigation/Navigation';
 
 const WECHAT_GREEN = '#07C160';
 
 const GameCenterPage: React.FC = () => {
-  const [selectedGame, setSelectedGame] = useState<GameDefinition | null>(null);
   const handleManage = useCallback(() => {
     // 先占位，后面可以扩展到搜索、最近玩过或排序管理
   }, []);
 
   useNavbarRightAction('game_center_manage', handleManage);
-
-  if (selectedGame) {
-    const GameContainerPage = require('./GameContainerPage').default as React.ComponentType<{
-      game: GameDefinition;
-      onBack: () => void;
-    }>;
-
-    return (
-      <GameContainerPage
-        game={selectedGame}
-        onBack={() => setSelectedGame(null)}
-      />
-    );
-  }
 
   return (
     <PageScaffold
@@ -62,7 +48,7 @@ const GameCenterPage: React.FC = () => {
           {GAMES.map((game, index) => (
             <Pressable
               key={game.id}
-              onPress={() => setSelectedGame(game)}
+              onPress={() => Navigation.push('gameContainer', {gameId: game.id})}
               style={[styles.gameCard, index === 0 && styles.gameCardFeature]}>
               <View style={styles.gameCardTop}>
                 <View style={styles.gameBadge}>
