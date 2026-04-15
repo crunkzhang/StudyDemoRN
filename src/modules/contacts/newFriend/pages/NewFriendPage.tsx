@@ -1,24 +1,21 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {FlatList, StyleSheet, View} from 'react-native';
-import PageScaffold from '../../../shared/ui/PageScaffold';
-import SearchBar from '../../../shared/ui/SearchBar';
-import ListSection from '../../../shared/ui/ListSection';
-import ListCell from '../../../shared/ui/ListCell';
-import EmptyState from '../../../shared/ui/EmptyState';
-import {Colors, Space} from '../../../shared/ui/tokens';
-import {UserPlus} from '../../../shared/ui/icons';
-import {mockFriendRequests, FriendRequest} from '../data/mockFriendRequests';
-import FriendRequestRow from './components/FriendRequestRow';
+import PageScaffold from '../../../../shared/ui/PageScaffold';
+import SearchBar from '../../../../shared/ui/SearchBar';
+import ListSection from '../../../../shared/ui/ListSection';
+import ListCell from '../../../../shared/ui/ListCell';
+import EmptyState from '../../../../shared/ui/EmptyState';
+import {Colors, Space} from '../../../../shared/ui/tokens';
+import {UserPlus} from '../../../../shared/ui/icons';
+import FriendRequestRow from '../components/FriendRequestRow';
+import {useFriendRequest} from '../stores/useFriendRequest';
 
 const IconBox: React.FC<{color: string; children: React.ReactNode}> = ({color, children}) => (
   <View style={[styles.iconBox, {backgroundColor: color}]}>{children}</View>
 );
 
-const NewFriendsScreen: React.FC = () => {
-  const [list, setList] = useState<FriendRequest[]>(mockFriendRequests);
-
-  const accept = (id: string) =>
-    setList(prev => prev.map(x => (x.id === id ? {...x, status: 'accepted'} : x)));
+const NewFriendPage: React.FC = () => {
+  const {list, accept} = useFriendRequest();
 
   return (
     <PageScaffold navMode="native" title="新的朋友" backgroundColor={Colors.bgPage}>
@@ -76,4 +73,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default NewFriendsScreen;
+export default NewFriendPage;

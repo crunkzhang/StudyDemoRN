@@ -1,39 +1,20 @@
-import React, {useEffect, useMemo, useRef, useState} from 'react';
+import React, {useRef} from 'react';
 import {Pressable, StyleSheet, Text, TextInput, View, ScrollView} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {Colors, Space, Type, Hairline} from '../../../shared/ui/tokens';
-import SearchBar from '../../../shared/ui/SearchBar';
-import Avatar from '../../../shared/ui/Avatar';
-import EmptyState from '../../../shared/ui/EmptyState';
-import {Search as SearchIcon} from '../../../shared/ui/icons';
-import QuickEntryGrid from './components/QuickEntryGrid';
-import SearchHitText from './components/SearchHitText';
-import {mockContactsLite} from '../data/mockContacts';
-import {mockGroups} from '../data/mockGroups';
-import {mockOfficialAccounts} from '../data/mockOfficialAccounts';
-import {Navigation} from '../../../app/navigation/Navigation';
+import {Colors, Space, Type, Hairline} from '../../../../shared/ui/tokens';
+import SearchBar from '../../../../shared/ui/SearchBar';
+import Avatar from '../../../../shared/ui/Avatar';
+import EmptyState from '../../../../shared/ui/EmptyState';
+import {Search as SearchIcon} from '../../../../shared/ui/icons';
+import QuickEntryGrid from '../../common/components/QuickEntryGrid';
+import SearchHitText from '../../common/components/SearchHitText';
+import {Navigation} from '../../../../app/navigation/Navigation';
+import {useSearch} from '../stores/useSearch';
 
-const SearchScreen: React.FC = () => {
+const SearchPage: React.FC = () => {
   const insets = useSafeAreaInsets();
   const inputRef = useRef<TextInput>(null);
-  const [raw, setRaw] = useState('');
-  const [debounced, setDebounced] = useState('');
-
-  useEffect(() => {
-    const id = setTimeout(() => setDebounced(raw.trim()), 200);
-    return () => clearTimeout(id);
-  }, [raw]);
-
-  const results = useMemo(() => {
-    if (!debounced) return null;
-    const key = debounced.toLowerCase();
-    const match = (s: string) => s.toLowerCase().includes(key);
-    return {
-      contacts: mockContactsLite.filter(c => match(c.name) || match(c.wxid)).slice(0, 3),
-      groups: mockGroups.filter(g => match(g.name)).slice(0, 3),
-      official: mockOfficialAccounts.filter(o => match(o.name) || match(o.latest)).slice(0, 3),
-    };
-  }, [debounced]);
+  const {raw, setRaw, debounced, results} = useSearch();
 
   const nothing =
     debounced && results && !results.contacts.length && !results.groups.length && !results.official.length;
@@ -139,4 +120,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SearchScreen;
+export default SearchPage;

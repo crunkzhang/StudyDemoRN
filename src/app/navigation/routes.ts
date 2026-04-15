@@ -63,27 +63,27 @@ export const routes: Record<RouteName, RouteEntry> = {
   },
   contactNewFriends: {
     description: '新的朋友',
-    component: () => require('../../modules/contacts/views/NewFriendsScreen').default,
+    component: () => require('../../modules/contacts/newFriend/pages/NewFriendPage').default,
   },
   contactGroups: {
     description: '群聊',
-    component: () => require('../../modules/contacts/views/GroupChatsScreen').default,
+    component: () => require('../../modules/contacts/groupChat/pages/GroupChatPage').default,
   },
   contactTags: {
     description: '标签',
-    component: () => require('../../modules/contacts/views/TagsScreen').default,
+    component: () => require('../../modules/contacts/tag/pages/TagPage').default,
   },
   contactTagCreate: {
     description: '新建标签',
-    component: () => require('../../modules/contacts/views/TagCreateScreen').default,
+    component: () => require('../../modules/contacts/tag/pages/TagCreatePage').default,
   },
   contactOfficialAccounts: {
     description: '公众号',
-    component: () => require('../../modules/contacts/views/OfficialAccountsScreen').default,
+    component: () => require('../../modules/contacts/officialAccount/pages/OfficialAccountPage').default,
   },
   contactSearch: {
     description: '通讯录搜索',
-    component: () => require('../../modules/contacts/views/SearchScreen').default,
+    component: () => require('../../modules/contacts/search/pages/SearchPage').default,
   },
 };
 

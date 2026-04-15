@@ -1,15 +1,16 @@
 import React from 'react';
 import {Pressable, ScrollView, StyleSheet, Text} from 'react-native';
-import PageScaffold from '../../../shared/ui/PageScaffold';
-import ListSection from '../../../shared/ui/ListSection';
-import ListCell from '../../../shared/ui/ListCell';
-import EmptyState from '../../../shared/ui/EmptyState';
-import {Colors, Space} from '../../../shared/ui/tokens';
-import {Tag} from '../../../shared/ui/icons';
-import {mockTags} from '../data/mockTags';
-import {Navigation} from '../../../app/navigation/Navigation';
+import PageScaffold from '../../../../shared/ui/PageScaffold';
+import ListSection from '../../../../shared/ui/ListSection';
+import ListCell from '../../../../shared/ui/ListCell';
+import EmptyState from '../../../../shared/ui/EmptyState';
+import {Colors, Space} from '../../../../shared/ui/tokens';
+import {Tag} from '../../../../shared/ui/icons';
+import {Navigation} from '../../../../app/navigation/Navigation';
+import {useTag} from '../stores/useTag';
 
-const TagsScreen: React.FC = () => {
+const TagPage: React.FC = () => {
+  const {list} = useTag();
   const goCreate = () => Navigation.push('contactTagCreate');
 
   return (
@@ -23,9 +24,9 @@ const TagsScreen: React.FC = () => {
         </Pressable>
       }>
       <ScrollView>
-        {mockTags.length > 0 ? (
+        {list.length > 0 ? (
           <ListSection header="按标签" marginTop={Space.sectionGap}>
-            {mockTags.map(t => (
+            {list.map(t => (
               <ListCell
                 key={t.id}
                 title={t.name}
@@ -50,4 +51,4 @@ const styles = StyleSheet.create({
   nav: {color: Colors.brand, fontSize: 16, fontWeight: '500'},
 });
 
-export default TagsScreen;
+export default TagPage;

@@ -1,5 +1,6 @@
-export interface ContactLite { id: string; name: string; wxid: string; }
-export const mockContactsLite: ContactLite[] = [
+import type {ContactLite} from './types';
+
+export const mockContactList: ContactLite[] = [
   {id: 'c1', name: '陈静', wxid: 'chen_j'},
   {id: 'c2', name: '王芳', wxid: 'wangfang88'},
   {id: 'c3', name: '张伟', wxid: 'zhangwei_dev'},

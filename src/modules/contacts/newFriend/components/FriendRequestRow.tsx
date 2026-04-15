@@ -2,7 +2,7 @@ import React from 'react';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
 import {Colors, Space, Hairline, Type} from '../../../../shared/ui/tokens';
 import Avatar from '../../../../shared/ui/Avatar';
-import type {FriendRequest} from '../../data/mockFriendRequests';
+import type {FriendRequest} from '../models/types';
 
 interface Props {
   item: FriendRequest;

@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleProp, Text, TextStyle} from 'react-native';
 import {Colors} from '../../../../shared/ui/tokens';
-import {splitByHit} from '../../utils/highlight';
+import {splitByHit} from '../utils/highlight';
 
 interface Props { text: string; keyword: string; style?: StyleProp<TextStyle>; numberOfLines?: number; }
 

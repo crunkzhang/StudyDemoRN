@@ -1,13 +1,19 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Pressable, ScrollView, StyleSheet, Text, TextInput, View} from 'react-native';
-import PageScaffold from '../../../shared/ui/PageScaffold';
-import {Colors, Space, Type, Hairline} from '../../../shared/ui/tokens';
-import Avatar from '../../../shared/ui/Avatar';
-import {mockContactsLite} from '../data/mockContacts';
+import PageScaffold from '../../../../shared/ui/PageScaffold';
+import {Colors, Space, Type, Hairline} from '../../../../shared/ui/tokens';
+import Avatar from '../../../../shared/ui/Avatar';
+import type {ContactLite} from '../../common/models/types';
+import {fetchContactList} from '../../common/requests/contactReq';
 
-const TagCreateScreen: React.FC = () => {
+const TagCreatePage: React.FC = () => {
   const [name, setName] = useState('');
   const [selected, setSelected] = useState<string[]>([]);
+  const [contacts, setContacts] = useState<ContactLite[]>([]);
+
+  useEffect(() => {
+    fetchContactList().then(setContacts);
+  }, []);
 
   const canSave = name.trim().length > 0;
 
@@ -39,7 +45,7 @@ const TagCreateScreen: React.FC = () => {
         {selected.length > 0 ? (
           <View style={styles.chipWrap}>
             {selected.map(id => {
-              const c = mockContactsLite.find(x => x.id === id);
+              const c = contacts.find(x => x.id === id);
               if (!c) return null;
               return (
                 <View key={id} style={styles.chip}>
@@ -52,7 +58,7 @@ const TagCreateScreen: React.FC = () => {
         ) : null}
 
         <View style={{padding: 12}}>
-          {mockContactsLite.slice(0, 3).map(c => (
+          {contacts.slice(0, 3).map(c => (
             <Pressable
               key={c.id}
               onPress={() =>
@@ -91,4 +97,4 @@ const styles = StyleSheet.create({
   debugRow: {paddingVertical: 10},
 });
 
-export default TagCreateScreen;
+export default TagCreatePage;
