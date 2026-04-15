@@ -6,29 +6,40 @@ import ListSection from '../../../../shared/ui/ListSection';
 import ListCell from '../../../../shared/ui/ListCell';
 import {Colors, Space} from '../../../../shared/ui/tokens';
 import {Plus, Users} from '../../../../shared/ui/icons';
+import {navigationBridge} from '../../../../shared/bridges/common/navigation/navigationBridge';
 import GroupAvatar from '../components/GroupAvatar';
 import {useGroupChat} from '../stores/useGroupChat';
+import type {GroupEntry} from '../models/types';
 
 const IconBox: React.FC<{color: string; children: React.ReactNode}> = ({color, children}) => (
   <View style={[styles.iconBox, {backgroundColor: color}]}>{children}</View>
 );
 
+const renderEntryIcon = (entry: GroupEntry) => {
+  switch (entry.iconKey) {
+    case 'plus':  return <Plus size={18} />;
+    case 'users': return <Users size={18} />;
+  }
+};
+
 const GroupChatPage: React.FC = () => {
-  const {list} = useGroupChat();
+  const {list, entries} = useGroupChat();
   return (
     <PageScaffold navMode="native" title="群聊" backgroundColor={Colors.bgPage}>
       <ScrollView>
         <SearchBar editable={false} />
-        <ListSection marginTop={Space.sectionGap}>
-          <ListCell
-            left={<IconBox color={Colors.brand}><Plus size={18} /></IconBox>}
-            title="发起群聊"
-          />
-          <ListCell
-            left={<IconBox color="#4D7CFE"><Users size={18} /></IconBox>}
-            title="保存到通讯录的群聊"
-          />
-        </ListSection>
+        {entries.length > 0 && (
+          <ListSection marginTop={Space.sectionGap}>
+            {entries.map(entry => (
+              <ListCell
+                key={entry.id}
+                left={<IconBox color={entry.iconBgColor}>{renderEntryIcon(entry)}</IconBox>}
+                title={entry.title}
+                onPress={() => navigationBridge.pushURL(entry.jumpUrl)}
+              />
+            ))}
+          </ListSection>
+        )}
         <ListSection header="我的群聊">
           {list.map(g => (
             <ListCell
