@@ -1,6 +1,6 @@
 import React, {useCallback} from 'react';
 import {Pressable, ScrollView, StyleSheet, Text, View} from 'react-native';
-import {GAMES} from '../data/games';
+import {useGame} from '../stores/useGame';
 import PageScaffold from '../../../../shared/ui/PageScaffold';
 import {useNavbarRightAction} from '../../../../shared/bridges/hooks/useNavbar';
 import {Navigation} from '../../../../app/navigation/Navigation';
@@ -8,6 +8,7 @@ import {Navigation} from '../../../../app/navigation/Navigation';
 const WECHAT_GREEN = '#07C160';
 
 const GameCenterPage: React.FC = () => {
+  const {list} = useGame();
   const handleManage = useCallback(() => {
     // 先占位，后面可以扩展到搜索、最近玩过或排序管理
   }, []);
@@ -45,7 +46,7 @@ const GameCenterPage: React.FC = () => {
             <Text style={styles.channelChip}>朋友在玩</Text>
           </View>
 
-          {GAMES.map((game, index) => (
+          {list.map((game, index) => (
             <Pressable
               key={game.id}
               onPress={() => Navigation.push('gameContainer', {gameId: game.id})}

@@ -10,7 +10,8 @@ import {
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import WebView, {WebViewMessageEvent} from 'react-native-webview';
-import {GAMES} from '../data/games';
+import {useGame} from '../stores/useGame';
+import {gameHtmlMap} from '../web/gameHtmlMap';
 import {useRouteParams} from '../../../../app/navigation/useRouteParams';
 import {Navigation} from '../../../../app/navigation/Navigation';
 
@@ -35,7 +36,9 @@ const injectedCommand = (type: 'restart' | 'pause' | 'resume') => {
 
 const GameContainerPage: React.FC = () => {
   const {gameId} = useRouteParams('gameContainer');
-  const game = useMemo(() => GAMES.find(g => g.id === gameId), [gameId]);
+  const {list} = useGame();
+  const game = useMemo(() => list.find(g => g.id === gameId), [list, gameId]);
+  const html = useMemo(() => gameHtmlMap[gameId] ?? '', [gameId]);
   const webViewRef = useRef<WebView>(null);
   const [score, setScore] = useState(0);
   const [statusText, setStatusText] = useState('正在连接游戏...');
@@ -43,13 +46,13 @@ const GameContainerPage: React.FC = () => {
 
   const source = useMemo(
     () => ({
-      html: game?.html ?? '',
+      html,
       baseUrl: Platform.OS === 'android' ? 'https://game.local/' : '',
     }),
-    [game],
+    [html],
   );
 
-  if (!game) {
+  if (!html) {
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.header}>
@@ -111,7 +114,7 @@ const GameContainerPage: React.FC = () => {
           <Text style={styles.headerButtonText}>返回</Text>
         </Pressable>
         <View style={styles.headerCenter}>
-          <Text style={styles.headerTitle}>{game.title}</Text>
+          <Text style={styles.headerTitle}>{game?.title ?? gameId}</Text>
           <Text style={styles.headerSubtitle}>{statusText}</Text>
         </View>
         <Pressable onPress={handleRestart} style={styles.headerButton}>
