@@ -9,14 +9,14 @@ import {Colors, Space} from '../../../../shared/ui/tokens';
 import {UserPlus} from '../../../../shared/ui/icons';
 import {navigationBridge} from '../../../../shared/bridges/common/navigation/navigationBridge';
 import FriendRequestRow from '../components/FriendRequestRow';
-import {useFriendRequest} from '../stores/useFriendRequest';
+import {useNewFriend} from '../stores/useNewFriend';
 
 const IconBox: React.FC<{color: string; children: React.ReactNode}> = ({color, children}) => (
   <View style={[styles.iconBox, {backgroundColor: color}]}>{children}</View>
 );
 
 const NewFriendPage: React.FC = () => {
-  const {list, addEntries, accept} = useFriendRequest();
+  const {list, addEntries, accept} = useNewFriend();
 
   return (
     <PageScaffold navMode="native" title="新的朋友" backgroundColor={Colors.bgPage}>

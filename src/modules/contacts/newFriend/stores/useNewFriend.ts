@@ -4,9 +4,9 @@ import {
   acceptFriendApplication,
   fetchAddEntries,
   fetchFriendApplications,
-} from '../requests/friendRequestReq';
+} from '../requests/newFriendReq';
 
-export const useFriendRequest = () => {
+export const useNewFriend = () => {
   const [list, setList] = useState<FriendApplication[]>([]);
   const [addEntries, setAddEntries] = useState<AddEntry[]>([]);
 
