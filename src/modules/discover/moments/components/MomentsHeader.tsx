@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -9,6 +9,7 @@ import {
   Dimensions,
   Alert,
 } from 'react-native';
+import {http, NetDomain} from '../../../../shared/net';
 
 const {width: SCREEN_WIDTH} = Dimensions.get('window');
 export const COVER_HEIGHT = 248;
@@ -18,7 +19,7 @@ const HEADER_HEIGHT = COVER_HEIGHT + AVATAR_OVERHANG;
 
 export const COVER_URI =
   'https://images.unsplash.com/photo-1514565131-fce0801e5785?auto=format&fit=crop&w=1400&q=80';
-const AVATAR_URI = 'https://i.pravatar.cc/150?img=10';
+const FALLBACK_AVATAR_URI = 'https://i.pravatar.cc/150?img=10';
 const MY_NAME = '我';
 
 interface Props {
@@ -26,6 +27,18 @@ interface Props {
 }
 
 export default function MomentsHeader({scrollY}: Props) {
+  const [avatarUri, setAvatarUri] = useState(FALLBACK_AVATAR_URI);
+
+  useEffect(() => {
+    http
+      .get<{message: string; status: string}>(
+        NetDomain.PetMock,
+        '/api/breeds/image/random',
+      )
+      .then(r => setAvatarUri(r.message))
+      .catch(e => console.warn('[dogceo]', e.name, e.code ?? e.bizCode, e.message));
+  }, []);
+
   const pullDownDistance = scrollY.interpolate({
     inputRange: [-COVER_HEIGHT, 0],
     outputRange: [COVER_HEIGHT, 0],
@@ -65,7 +78,7 @@ export default function MomentsHeader({scrollY}: Props) {
       {/* 个人信息（右下角） */}
       <View style={styles.profileRow}>
         <Text style={styles.name}>{MY_NAME}</Text>
-        <Image source={{uri: AVATAR_URI}} style={styles.avatar} />
+        <Image source={{uri: avatarUri}} style={styles.avatar} />
       </View>
 
       {/* 相机按钮（右上角） */}

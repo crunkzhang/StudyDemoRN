@@ -22,6 +22,8 @@ export interface HttpConfig {
   headers?: Record<string, string>;
   timeout?: number;
   requestId?: string;
+  /** 未设置时使用该域的默认鉴权策略（iOS APIService.defaultRequiresAuth） */
+  auth?: boolean;
 }
 
 /** 网络层错误：传输 / HTTP 状态 / 解析等非业务错误 */

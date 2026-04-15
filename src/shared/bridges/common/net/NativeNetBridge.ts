@@ -10,6 +10,7 @@ export interface NativeHttpConfig {
   headers?: {[k: string]: string};
   timeout?: number;
   requestId?: string;
+  auth?: boolean;
 }
 
 export interface Spec extends TurboModule {

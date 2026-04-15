@@ -14,6 +14,7 @@ interface SendOptions {
   headers?: Record<string, string>;
   timeout?: number;
   requestId?: string;
+  auth?: boolean;
 }
 
 const send = async <T>(
