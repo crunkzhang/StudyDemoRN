@@ -16,7 +16,7 @@ import LikeList from './LikeList';
 import CommentList from './CommentList';
 import CommentInput from './CommentInput';
 import {showPostActionSheet} from './PostActionSheet';
-import {useCommentViewModel} from '../viewmodels/useCommentViewModel';
+import {useCommentInput} from '../stores/useCommentInput';
 
 const {width: SCREEN_WIDTH, height: SCREEN_HEIGHT} = Dimensions.get('window');
 
@@ -45,7 +45,7 @@ export default function PostItem({post, onLike, onAddComment, onDeletePost}: Pro
     [post.id, onAddComment],
   );
 
-  const commentVM = useCommentViewModel(handleAddComment);
+  const commentVM = useCommentInput(handleAddComment);
 
   const handleLongPress = useCallback(() => {
     showPostActionSheet(action => {

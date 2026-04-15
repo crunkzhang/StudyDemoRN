@@ -1,6 +1,6 @@
 import {useState, useCallback} from 'react';
 
-export function useCommentViewModel(
+export function useCommentInput(
   onSubmit: (content: string) => Promise<void>,
 ) {
   const [visible, setVisible] = useState(false);

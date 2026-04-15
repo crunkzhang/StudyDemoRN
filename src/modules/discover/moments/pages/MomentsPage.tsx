@@ -8,7 +8,7 @@ import {
   Text,
 } from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {useMomentsViewModel} from '../viewmodels/useMomentsViewModel';
+import {useMoments} from '../stores/useMoments';
 import PostItem from '../components/PostItem';
 import MomentsHeader, {
   COVER_HEIGHT,
@@ -22,7 +22,7 @@ const HEADER_HEIGHT = COVER_HEIGHT + AVATAR_OVERHANG;
 export default function MomentsPage() {
   const insets = useSafeAreaInsets();
   const scrollY = React.useRef(new Animated.Value(0)).current;
-  const vm = useMomentsViewModel();
+  const vm = useMoments();
 
   useEffect(() => {
     vm.initialLoad();
