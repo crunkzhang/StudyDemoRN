@@ -4,7 +4,7 @@ export const Colors = {
   brand: '#07C160',
   brandPressed: '#06AD56',
   danger: '#FA5151',
-  bgPage: '#EDEDED',
+  bgPage: '#F5F5F7',
   bgCard: '#FFFFFF',
   bgCardPressed: '#D9D9D9',
   textPrimary: '#191919',

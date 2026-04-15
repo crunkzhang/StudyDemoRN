@@ -51,7 +51,7 @@ const NewFriendPage: React.FC = () => {
         }
         ListFooterComponent={
           addEntries.length > 0 ? (
-            <ListSection>
+            <ListSection header="添加方式">
               {addEntries.map(entry => (
                 <ListCell
                   key={entry.id}
