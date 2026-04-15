@@ -7,6 +7,7 @@ import ListCell from '../../../../shared/ui/ListCell';
 import EmptyState from '../../../../shared/ui/EmptyState';
 import {Colors, Space} from '../../../../shared/ui/tokens';
 import {UserPlus} from '../../../../shared/ui/icons';
+import {navigationBridge} from '../../../../shared/bridges/common/navigation/navigationBridge';
 import FriendRequestRow from '../components/FriendRequestRow';
 import {useFriendRequest} from '../stores/useFriendRequest';
 
@@ -15,7 +16,7 @@ const IconBox: React.FC<{color: string; children: React.ReactNode}> = ({color, c
 );
 
 const NewFriendPage: React.FC = () => {
-  const {list, accept} = useFriendRequest();
+  const {list, addEntries, accept} = useFriendRequest();
 
   return (
     <PageScaffold navMode="native" title="新的朋友" backgroundColor={Colors.bgPage}>
@@ -49,16 +50,22 @@ const NewFriendPage: React.FC = () => {
           />
         }
         ListFooterComponent={
-          <ListSection>
-            <ListCell
-              left={<IconBox color="#F39B38"><UserPlus size={18} /></IconBox>}
-              title="添加手机联系人"
-            />
-            <ListCell
-              left={<IconBox color="#4D7CFE"><UserPlus size={18} /></IconBox>}
-              title="添加 QQ 好友"
-            />
-          </ListSection>
+          addEntries.length > 0 ? (
+            <ListSection>
+              {addEntries.map(entry => (
+                <ListCell
+                  key={entry.id}
+                  left={
+                    <IconBox color={entry.iconBgColor}>
+                      <UserPlus size={18} />
+                    </IconBox>
+                  }
+                  title={entry.title}
+                  onPress={() => navigationBridge.pushURL(entry.jumpUrl)}
+                />
+              ))}
+            </ListSection>
+          ) : null
         }
       />
     </PageScaffold>
