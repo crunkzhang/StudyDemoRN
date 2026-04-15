@@ -5,6 +5,7 @@ import {Colors, Space, Type, Hairline} from '../../../../shared/ui/tokens';
 import Avatar from '../../../../shared/ui/Avatar';
 import type {ContactLite} from '../../common/models/types';
 import {fetchContactList} from '../../common/requests/contactReq';
+import {createTag} from '../requests/tagReq';
 
 const TagCreatePage: React.FC = () => {
   const [name, setName] = useState('');
@@ -17,13 +18,22 @@ const TagCreatePage: React.FC = () => {
 
   const canSave = name.trim().length > 0;
 
+  const handleSave = async () => {
+    if (!canSave) return;
+    try {
+      await createTag({name: name.trim(), contactIds: selected});
+    } catch (e) {
+      console.warn('[tag] create', e);
+    }
+  };
+
   return (
     <PageScaffold
       navMode="native"
       title="新建标签"
       backgroundColor={Colors.bgPage}
       right={
-        <Pressable hitSlop={10} disabled={!canSave}>
+        <Pressable hitSlop={10} disabled={!canSave} onPress={handleSave}>
           <Text style={[styles.nav, !canSave && {opacity: 0.4}]}>保存</Text>
         </Pressable>
       }>
