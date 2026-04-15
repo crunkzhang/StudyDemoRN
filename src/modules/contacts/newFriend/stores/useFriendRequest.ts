@@ -1,16 +1,34 @@
 import {useEffect, useState} from 'react';
-import type {FriendRequest} from '../models/types';
-import {fetchFriendRequestList} from '../requests/friendRequestReq';
+import type {AddEntry, FriendApplication} from '../models/types';
+import {
+  acceptFriendApplication,
+  fetchAddEntries,
+  fetchFriendApplications,
+} from '../requests/friendRequestReq';
 
 export const useFriendRequest = () => {
-  const [list, setList] = useState<FriendRequest[]>([]);
+  const [list, setList] = useState<FriendApplication[]>([]);
+  const [addEntries, setAddEntries] = useState<AddEntry[]>([]);
 
   useEffect(() => {
-    fetchFriendRequestList().then(setList);
+    fetchFriendApplications()
+      .then(setList)
+      .catch(e => console.warn('[newFriend] applications', e));
+    fetchAddEntries()
+      .then(setAddEntries)
+      .catch(e => console.warn('[newFriend] addEntries', e));
   }, []);
 
-  const accept = (id: string) =>
-    setList(prev => prev.map(x => (x.id === id ? {...x, status: 'accepted'} : x)));
+  const accept = async (id: string) => {
+    try {
+      await acceptFriendApplication(id);
+      setList(prev =>
+        prev.map(x => (x.id === id ? {...x, status: 'accepted'} : x)),
+      );
+    } catch (e) {
+      console.warn('[newFriend] accept', e);
+    }
+  };
 
-  return {list, accept};
+  return {list, addEntries, accept};
 };
