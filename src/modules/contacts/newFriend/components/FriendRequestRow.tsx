@@ -2,10 +2,10 @@ import React from 'react';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
 import {Colors, Space, Hairline, Type} from '../../../../shared/ui/tokens';
 import Avatar from '../../../../shared/ui/Avatar';
-import type {FriendRequest} from '../models/types';
+import type {FriendApplication} from '../models/types';
 
 interface Props {
-  item: FriendRequest;
+  item: FriendApplication;
   onAccept?: (id: string) => void;
   onPress?: (id: string) => void;
   showSeparator?: boolean;
