@@ -79,6 +79,11 @@ const SettingsPage: React.FC = () => {
           {renderRows(serviceRows)}
         </View>
 
+        <View style={styles.versionWrap}>
+          <Text style={styles.versionText}>Bundle 版本: 20260417184353</Text>
+          <Text style={styles.versionHint}>immediate + 无缓存验证</Text>
+        </View>
+
         <View style={styles.logoutWrap}>
           <Text style={styles.logoutText}>退出登录</Text>
         </View>
@@ -166,6 +171,21 @@ const styles = StyleSheet.create({
     color: '#BCC1C9',
     fontSize: 24,
     lineHeight: 24,
+  },
+  versionWrap: {
+    alignItems: 'center',
+    paddingVertical: 14,
+    marginBottom: 14,
+  },
+  versionText: {
+    color: '#9CA3AF',
+    fontSize: 13,
+    fontWeight: '600',
+  },
+  versionHint: {
+    marginTop: 4,
+    color: '#D1D5DB',
+    fontSize: 11,
   },
   logoutWrap: {
     alignItems: 'center',
