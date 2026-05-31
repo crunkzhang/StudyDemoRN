@@ -74,5 +74,8 @@ yarn-error.log
 !.yarn/sdks
 !.yarn/versions
 
-# Claude Code local settings
-.claude/settings.local.json
+# Claude Code / AI 工具配置(功能无关,不上传)
+.claude/
+
+# AI 辅助的规划文档(spec/plan,内部过程,不上传)
+docs/superpowers/
